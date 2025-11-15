@@ -16,6 +16,9 @@ dependencies:
   # State Management
   flutter_riverpod: ^2.5.1
 
+  # Router
+  go_router: ^14.6.2
+
   # Dependency Injection
   get_it: ^7.6.7
   injectable: ^2.3.2
@@ -23,6 +26,9 @@ dependencies:
   # Local Database
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+
+  # SVG
+  flutter_svg: ^2.0.10
 
 dev_dependencies:
   flutter_test:

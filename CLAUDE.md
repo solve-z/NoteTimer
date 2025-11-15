@@ -92,3 +92,14 @@ flutter build windows      # Windows
 - Repository는 Domain의 인터페이스를 Data에서 구현
 - DTO는 API 응답용, Domain Model은 앱 내부 로직용으로 분리
 - 에러 처리는 try-catch 사용 (dartz/fpdart 미사용)
+
+## Coding Style
+
+- **Color opacity**: NEVER use `withOpacity()`. Always use `withValues(alpha: value)` instead.
+  ```dart
+  // ❌ Bad
+  color: const Color(0xFFFFD147).withOpacity(0.2)
+
+  // ✅ Good
+  color: const Color(0xFFFFD147).withValues(alpha: 0.2)
+  ```
