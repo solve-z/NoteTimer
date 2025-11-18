@@ -1,0 +1,26 @@
+<svg viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+  <!-- 모래시계 상단 테두리 -->
+  <rect x="15" y="10" width="90" height="10" fill="#8B4513" rx="3"/>
+
+  <!-- 모래시계 상단 유리 -->
+  <path d="M 20 20 L 60 70 L 100 20 Z" fill="#E8F4F8" stroke="#8B4513" stroke-width="2"/>
+
+  <!-- 모래시계 하단 유리 -->
+  <path d="M 20 140 L 60 90 L 100 140 Z" fill="#E8F4F8" stroke="#8B4513" stroke-width="2"/>
+
+  <!-- 모래 (상단) -->
+  <path d="M 30 25 L 60 55 L 90 25 L 85 22 L 60 45 L 35 22 Z" fill="#FFD147"/>
+
+  <!-- 모래 (하단) -->
+  <path d="M 25 138 L 95 138 L 85 125 L 35 125 Z" fill="#FFD147"/>
+
+  <!-- 떨어지는 모래 -->
+  <line x1="60" y1="60" x2="60" y2="85" stroke="#FFD147" stroke-width="3"/>
+  <circle cx="60" cy="87" r="2" fill="#FFD147"/>
+
+  <!-- 모래시계 하단 테두리 -->
+  <rect x="15" y="140" width="90" height="10" fill="#8B4513" rx="3"/>
+
+  <!-- 중앙 연결부 -->
+  <circle cx="60" cy="80" r="4" fill="#8B4513"/>
+</svg>

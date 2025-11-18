@@ -1,10 +1,10 @@
 import 'package:get_it/get_it.dart';
+import 'package:note_timer/data/repository_impl/auth_repository_impl.dart';
+import 'package:note_timer/domain/repository/auth_repository.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
-  // TODO: 나중에 Repository, UseCase 등록
-  // 예시:
-  // getIt.registerSingleton<TodoRepository>(TodoRepositoryImpl());
-  // getIt.registerFactory(() => GetTodoUseCase(getIt()));
+  // Auth Repository
+  getIt.registerSingleton<AuthRepository>(AuthRepositoryImpl());
 }

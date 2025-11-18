@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/di/service_locator.dart';
 import 'presentation/router/router.dart';
 import 'data/data_source/local_storage/hive_setup.dart';
+import 'domain/repository/auth_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,15 +14,21 @@ void main() async {
   // Dependency Injection setup
   await setupServiceLocator();
 
+  // Check login status
+  final authRepository = getIt<AuthRepository>();
+  final isLoggedIn = await authRepository.isLoggedIn();
+
   runApp(
-    const ProviderScope(
-      child: MyApp(),
+    ProviderScope(
+      child: MyApp(isLoggedIn: isLoggedIn),
     ),
   );
 }
 
 class MyApp extends ConsumerWidget {
-  const MyApp({super.key});
+  final bool isLoggedIn;
+
+  const MyApp({super.key, required this.isLoggedIn});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,7 +39,7 @@ class MyApp extends ConsumerWidget {
         useMaterial3: true,
         fontFamily: 'NanumGothic',
       ),
-      routerConfig: router,
+      routerConfig: createRouter(isLoggedIn),
     );
   }
 }
