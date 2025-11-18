@@ -30,6 +30,9 @@ dependencies:
   # SVG
   flutter_svg: ^2.0.10
 
+  # Responsive UI
+  flutter_screenutil: ^5.9.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

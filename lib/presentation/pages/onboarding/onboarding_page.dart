@@ -1,151 +1,240 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-class OnboardingPage extends StatelessWidget {
+class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(height: 60),
-            // Title
-            const Text(
-              'NOTE TIMER',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.w400,
-                color: Color(0xFF333333),
-                letterSpacing: 1,
-              ),
-            ),
-            const SizedBox(height: 80),
-            // App Logo Illustration
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                // 노트
-                SvgPicture.asset(
-                  'assets/icons/note.svg',
-                  width: 180,
-                  height: 200,
-                ),
-                // 모래시계 (노트 앞에 배치)
-                Positioned(
-                  left: 20,
-                  bottom: 20,
-                  child: SvgPicture.asset(
-                    'assets/icons/hourglass.svg',
-                    width: 80,
-                    height: 100,
-                  ),
-                ),
-              ],
-            ),
-            const Spacer(),
-            // Guide text
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF5F5F5),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: const Color(0xFFE0E0E0), width: 1),
-              ),
-              child: const Text(
-                '로그인하고 오늘의 집중을 노트에 담아보세요',
-                style: TextStyle(fontSize: 13, color: Color(0xFF666666)),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const SizedBox(height: 40),
-            // Social login buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _SocialLoginButton(
-                  iconPath: 'assets/icons/kakao_icon.svg',
-                  backgroundColor: const Color(0xFFFEE500),
-                  onTap: () {
-                    // TODO: Kakao login
-                  },
-                ),
-                const SizedBox(width: 16),
-                _SocialLoginButton(
-                  iconPath: 'assets/icons/naver_icon.svg',
-                  backgroundColor: const Color(0xFF03C75A),
-                  onTap: () {
-                    // TODO: Naver login
-                  },
-                ),
-                const SizedBox(width: 16),
-                _SocialLoginButton(
-                  iconPath: 'assets/icons/google_icon.svg',
-                  backgroundColor: Colors.white,
-                  onTap: () {
-                    // TODO: Google login
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            // Skip login with info icon
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.info_outline, size: 18, color: Color(0xFF999999)),
-                  onPressed: () {
-                    _showLoginBenefitsDialog(context);
-                  },
-                ),
-                TextButton(
-                  onPressed: () {
-                    context.go('/main');
-                  },
-                  child: const Text(
-                    '로그인 없이 사용하기',
-                    style: TextStyle(fontSize: 13, color: Color(0xFF666666)),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 40),
-          ],
-        ),
-      ),
-    );
-  }
+  State<OnboardingPage> createState() => _OnboardingPageState();
+}
 
-  void _showLoginBenefitsDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
+class _OnboardingPageState extends State<OnboardingPage> {
+  bool _showInfoPopup = false;
+  final GlobalKey _infoIconKey = GlobalKey();
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        if (_showInfoPopup) {
+          setState(() {
+            _showInfoPopup = false;
+          });
+        }
+      },
+      child: Scaffold(
         backgroundColor: Colors.white,
-        title: const Text(
-          '로그인 시 사용 가능한 기능',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Color(0xFF333333)),
-        ),
-        content: const Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _BenefitItem(text: '여러 기기에서 데이터 동기화'),
-            _BenefitItem(text: '클라우드 백업 및 복원'),
-            _BenefitItem(text: '집중 기록 통계 및 분석'),
-            _BenefitItem(text: '프리미엄 테마 및 기능'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('확인', style: TextStyle(color: Color(0xFF333333))),
+        body: SafeArea(
+          child: Column(
+            children: [
+              SizedBox(height: 120.h), // 상단 여백
+              // Title
+              Text(
+                'NOTE TIMER',
+                style: TextStyle(
+                  fontSize: 36.sp,
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0xFF212121),
+                  letterSpacing: 1,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black.withValues(alpha: 0.25),
+                      offset: const Offset(0, 4),
+                      blurRadius: 8,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 47.h), // Title ~ Logo 간격
+              // App Logo Illustration (피그마 Y: 254, 200x200 영역)
+              SizedBox(
+                width: 200.w,
+                height: 200.h,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // 노트 (피그마 기준 190x200)
+                    SvgPicture.asset(
+                      'assets/icons/note.svg',
+                      width: 190.w,
+                      height: 200.h,
+                    ),
+                    // 모래시계 (노트 앞에 배치, 피그마 기준 약 100x120)
+                    Positioned(
+                      left: 20.w,
+                      bottom: 20.h,
+                      child: SvgPicture.asset(
+                        'assets/icons/hourglass.svg',
+                        width: 100.w,
+                        height: 120.h,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 47.h), // Logo ~ Guide text 간격
+              // Guide text
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 14.h),
+                margin: EdgeInsets.symmetric(horizontal: 15.w),
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      color: Colors.black.withValues(alpha: 0.6),
+                      width: 0.5,
+                    ),
+                    bottom: BorderSide(
+                      color: Colors.black.withValues(alpha: 0.6),
+                      width: 0.5,
+                    ),
+                  ),
+                ),
+                child: Text(
+                  '로그인하고 오늘의 집중을 노트에 담아보세요',
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: const Color(0xFF212121).withValues(alpha: 0.8),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(height: 40.h), // Guide text ~ Social buttons 간격
+              // Social login buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _SocialLoginButton(
+                    iconPath: 'assets/icons/kakao_icon.svg',
+                    backgroundColor: const Color(0xFFFEE500),
+                    onTap: () {
+                      // TODO: Kakao login
+                    },
+                  ),
+                  SizedBox(width: 26.w),
+                  _SocialLoginButton(
+                    iconPath: 'assets/icons/naver_icon.svg',
+                    backgroundColor: const Color(0xFF03C75A),
+                    onTap: () {
+                      // TODO: Naver login
+                    },
+                  ),
+                  SizedBox(width: 26.w),
+                  _SocialLoginButton(
+                    iconPath: 'assets/icons/google_icon.svg',
+                    backgroundColor: Colors.white,
+                    onTap: () {
+                      // TODO: Google login
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 36.h), // Social buttons ~ Skip login 간격
+              // Skip login with info icon
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        key: _infoIconKey,
+                        onTap: () {
+                          setState(() {
+                            _showInfoPopup = !_showInfoPopup;
+                          });
+                        },
+                        child: SvgPicture.asset(
+                          'assets/icons/info.svg',
+                          width: 16.w,
+                          height: 16.h,
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                      GestureDetector(
+                        onTap: () {
+                          context.go('/main');
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: const Color(0xFF525252),
+                                width: 0.5,
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            '로그인 없이 사용하기',
+                            style: TextStyle(
+                              fontSize: 11.sp,
+                              color: const Color(0xFF525252),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  // Info popup
+                  if (_showInfoPopup)
+                    Positioned(
+                      bottom: 16.h + 7.h, // 아이콘 높이 + 간격
+                      left: 0,
+                      right: 0,
+                      child: Center(
+                        child: Container(
+                          width: 260.w,
+                          padding: EdgeInsets.fromLTRB(17.w, 12.h, 17.w, 12.h),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.93),
+                            borderRadius: BorderRadius.circular(9.r),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.25),
+                                offset: const Offset(0, 4),
+                                blurRadius: 4,
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                '로그인하면 이런 기능들을 이용할 수 있어요 😊',
+                                style: TextStyle(
+                                  fontSize: 11.sp,
+                                  color: const Color(0xFF222222),
+                                ),
+                              ),
+                              SizedBox(height: 6.h),
+                              Text(
+                                '• 데이터 백업 및 동기화가 가능해요',
+                                style: TextStyle(
+                                  fontSize: 11.sp,
+                                  color: const Color(0xFF222222),
+                                ),
+                              ),
+                              SizedBox(height: 2.h),
+                              Text(
+                                '• 나의 집중 현황을 확인할 수 있어요',
+                                style: TextStyle(
+                                  fontSize: 11.sp,
+                                  color: const Color(0xFF222222),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+              const Spacer(), // 하단 여백은 유연하게
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -166,53 +255,7 @@ class _SocialLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        width: 64,
-        height: 64,
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Center(
-          child: SvgPicture.asset(
-            iconPath,
-            width: 28,
-            height: 28,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _BenefitItem extends StatelessWidget {
-  final String text;
-
-  const _BenefitItem({required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          const Icon(Icons.check_circle, size: 16, color: Color(0xFF4CAF50)),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(fontSize: 14, color: Color(0xFF666666)),
-            ),
-          ),
-        ],
-      ),
+      child: SvgPicture.asset(iconPath, width: 52.w, height: 52.h),
     );
   }
 }

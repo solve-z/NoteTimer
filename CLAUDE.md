@@ -44,11 +44,12 @@ lib/
 - **State Management:** flutter_riverpod
 - **Dependency Injection:** get_it (수동 등록 방식, injectable 설정은 있으나 미사용)
 - **Local Database:** Hive (TypeAdapter로 Domain Model 직접 저장)
+- **Responsive UI:** flutter_screenutil (피그마 디자인 기준: 360x800)
 - **No Entity Layer:** DTO와 Domain Model만 사용 (Entity 제거됨)
 
 ## Key Files
 
-- **`lib/main.dart`**: WidgetsFlutterBinding, Hive 초기화, DI 설정, ProviderScope 래핑
+- **`lib/main.dart`**: WidgetsFlutterBinding, Hive 초기화, DI 설정, ScreenUtilInit(360x800), ProviderScope 래핑
 - **`lib/core/di/service_locator.dart`**: get_it 수동 등록 (getIt.registerSingleton/Factory)
 - **`lib/data/data_source/local_storage/hive_setup.dart`**: Hive.initFlutter(), TypeAdapter 등록, Box 열기
 
@@ -102,4 +103,18 @@ flutter build windows      # Windows
 
   // ✅ Good
   color: const Color(0xFFFFD147).withValues(alpha: 0.2)
+  ```
+
+- **Responsive sizing**: ALWAYS use flutter_screenutil extensions for sizes (피그마 값 그대로 사용)
+  ```dart
+  // ✅ Good - 피그마 디자인 기준 (360x800)
+  SizedBox(height: 60.h)          // 높이
+  Container(width: 200.w)         // 너비
+  Text(style: TextStyle(fontSize: 16.sp))  // 폰트 크기
+  BorderRadius.circular(8.r)      // 반경
+  EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h)  // 패딩/마진
+
+  // ❌ Bad - 고정 값 사용 금지
+  SizedBox(height: 60)
+  Container(width: 200)
   ```
