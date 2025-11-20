@@ -70,13 +70,19 @@ class AuthDataSource {
     return _supabase.auth.currentUser != null;
   }
 
-  /// 닉네임 중복 체크
+  /// 닉네임 중복 체크 (현재 사용자 제외)
   Future<bool> checkNicknameDuplicate(String nickname) async {
     try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) {
+        throw Exception('로그인된 사용자가 없습니다.');
+      }
+
       final response = await _supabase
           .from('users')
           .select('nickname')
           .eq('nickname', nickname)
+          .neq('id', userId) // 본인 제외
           .maybeSingle();
 
       return response != null; // null이면 중복 없음
