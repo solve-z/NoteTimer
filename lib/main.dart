@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'core/config/supabase_config.dart';
 import 'core/di/service_locator.dart';
 import 'presentation/router/router.dart';
 import 'data/data_source/local_storage/hive_setup.dart';
-import 'domain/repository/auth_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Load environment variables
+  await dotenv.load(fileName: '.env');
+
+  // Supabase initialization
+  await Supabase.initialize(
+    url: SupabaseConfig.supabaseUrl,
+    anonKey: SupabaseConfig.supabaseAnonKey,
+  );
 
   // Hive initialization
   await initHive();
@@ -16,8 +27,7 @@ void main() async {
   await setupServiceLocator();
 
   // Check login status
-  final authRepository = getIt<AuthRepository>();
-  final isLoggedIn = await authRepository.isLoggedIn();
+  final isLoggedIn = Supabase.instance.client.auth.currentUser != null;
 
   runApp(
     ProviderScope(

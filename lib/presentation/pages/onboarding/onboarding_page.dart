@@ -1,18 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import '../../main/provider/auth_provider.dart';
 
-class OnboardingPage extends StatefulWidget {
+class OnboardingPage extends ConsumerStatefulWidget {
   const OnboardingPage({super.key});
 
   @override
-  State<OnboardingPage> createState() => _OnboardingPageState();
+  ConsumerState<OnboardingPage> createState() => _OnboardingPageState();
 }
 
-class _OnboardingPageState extends State<OnboardingPage> {
+class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   bool _showInfoPopup = false;
   final GlobalKey _infoIconKey = GlobalKey();
+
+  Future<void> _handleGoogleLogin() async {
+    try {
+      final signIn = ref.read(signInWithGoogleProvider);
+      final user = await signIn();
+
+      if (!mounted) return;
+
+      if (user == null) {
+        // 로그인 취소
+        return;
+      }
+
+      // 닉네임이 없으면 닉네임 등록 페이지로, 있으면 메인으로
+      if (user.nickname == null || user.nickname!.isEmpty) {
+        context.go('/nickname');
+      } else {
+        context.go('/main');
+      }
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('로그인에 실패했습니다'), backgroundColor: Colors.red),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,9 +153,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   _SocialLoginButton(
                     iconPath: 'assets/icons/google_icon.svg',
                     backgroundColor: Colors.white,
-                    onTap: () {
-                      // TODO: Google login
-                    },
+                    onTap: _handleGoogleLogin,
                   ),
                 ],
               ),
