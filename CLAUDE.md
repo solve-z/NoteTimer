@@ -93,6 +93,83 @@ flutter build windows      # Windows
 - Repository는 Domain의 인터페이스를 Data에서 구현
 - DTO는 API 응답용, Domain Model은 앱 내부 로직용으로 분리
 - 에러 처리는 try-catch 사용 (dartz/fpdart 미사용)
+- **Supabase SQL 쿼리**: 모든 데이터베이스 스키마 및 설정 SQL은 `docs/` 폴더에 마크다운 파일로 문서화
+  - 파일명 형식: `supabase-{테이블명}-setup.md`
+  - 예시: `docs/supabase-users-table-setup.md`, `docs/supabase-google-oauth-setup.md`
+
+## Clean Architecture 준수 규칙
+
+**IMPORTANT: 모든 코드 작성 시 Clean Architecture 의존성 규칙을 엄격히 준수해야 합니다.**
+
+### 의존성 방향 규칙
+```
+Presentation → Domain ← Data
+     ↓           ↑
+   Core ←────────┘
+```
+
+### 레이어별 금지 사항
+
+#### ❌ Presentation Layer (UI)
+- **절대 금지**: Data Layer 직접 참조 (Repository 구현체, DataSource, DTO 등)
+- **절대 금지**: Supabase, Hive 등 외부 라이브러리 직접 사용
+- **허용**: Domain (Model, Repository 인터페이스, UseCase), Core, Riverpod Provider
+
+```dart
+// ❌ BAD - Presentation에서 Data 직접 참조
+import '../../data/data_source/remote/auth_data_source.dart';
+final user = await AuthDataSource().getCurrentUser();
+
+// ✅ GOOD - UseCase 통해서만 접근
+final getUserUseCase = getIt<GetCurrentUserUseCase>();
+final user = await getUserUseCase();
+```
+
+#### ❌ Domain Layer (비즈니스 로직)
+- **절대 금지**: 어떤 레이어도 참조 불가 (순수 Dart만 사용)
+- **절대 금지**: Flutter, Supabase, Hive 등 모든 외부 패키지
+- **허용**: Dart 기본 라이브러리만 (dart:core, dart:async 등)
+
+```dart
+// ❌ BAD - Domain에서 외부 패키지 사용
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+// ✅ GOOD - 순수 Dart만 사용
+class UserModel {
+  final String id;
+  final String? nickname;
+}
+```
+
+#### ❌ Data Layer (데이터 소스)
+- **절대 금지**: Presentation Layer 참조 (Provider, Widget 등)
+- **허용**: Domain의 Model과 Repository 인터페이스만 참조
+- **허용**: Supabase, Hive 등 데이터 관련 외부 라이브러리
+
+```dart
+// ❌ BAD - Data에서 Presentation 참조
+import '../../presentation/main/provider/auth_provider.dart';
+
+// ✅ GOOD - Domain만 참조
+import '../../domain/model/user_model.dart';
+import '../../domain/repository/auth_repository.dart';
+```
+
+### 새 기능 추가 시 체크리스트
+
+1. **UseCase 먼저 작성** - Domain Layer에 비즈니스 로직 정의
+2. **Repository 인터페이스 확인** - Domain에 필요한 메서드가 있는지 확인
+3. **Repository 구현** - Data Layer에서 실제 데이터 소스 연결
+4. **DI 등록** - `service_locator.dart`에 수동 등록
+5. **Provider 작성** - Presentation에서 UseCase만 호출
+6. **UI 구현** - Provider를 통해서만 데이터 접근
+
+### 의존성 위반 예방
+
+- 코드 작성 전 "이 레이어가 저 레이어를 참조해도 되는가?" 항상 확인
+- `main.dart`나 `router.dart`에서 직접 DataSource 호출 금지
+- 비즈니스 로직은 항상 UseCase에 작성
+- UI에서 데이터 필요 시 반드시 UseCase 경유
 
 ## Coding Style
 

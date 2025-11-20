@@ -28,17 +28,13 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         return;
       }
 
-      // 닉네임이 없으면 닉네임 등록 페이지로, 있으면 메인으로
-      if (user.nickname == null || user.nickname!.isEmpty) {
-        context.go('/nickname');
-      } else {
-        context.go('/main');
-      }
+      // 로그인 성공 → 닉네임 페이지로 (Router가 자동으로 처리)
+      context.go('/nickname');
     } catch (e) {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('로그인에 실패했습니다'), backgroundColor: Colors.red),
+        SnackBar(content: Text('로그인에 실패했습니다 $e'), backgroundColor: Colors.red),
       );
     }
   }

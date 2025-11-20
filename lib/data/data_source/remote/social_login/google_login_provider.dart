@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'social_login_provider.dart';
 
@@ -5,7 +6,11 @@ class GoogleLoginProvider implements SocialLoginProvider {
   final GoogleSignIn _googleSignIn;
 
   GoogleLoginProvider({GoogleSignIn? googleSignIn})
-      : _googleSignIn = googleSignIn ?? GoogleSignIn();
+      : _googleSignIn = googleSignIn ??
+          GoogleSignIn(
+            scopes: ['email', 'profile'],
+            serverClientId: dotenv.env['GOOGLE_WEB_CLIENT_ID'],
+          );
 
   @override
   Future<Map<String, String>> signIn() async {

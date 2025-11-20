@@ -6,6 +6,7 @@ import '../../domain/usecase/auth/sign_in_with_google_usecase.dart';
 import '../../domain/usecase/auth/sign_out_usecase.dart';
 import '../../domain/usecase/auth/update_nickname_usecase.dart';
 import '../../domain/usecase/auth/check_nickname_duplicate_usecase.dart';
+import '../../domain/usecase/auth/get_current_user_usecase.dart';
 
 final getIt = GetIt.instance;
 
@@ -25,4 +26,5 @@ Future<void> setupServiceLocator() async {
   getIt.registerFactory(() => SignOutUseCase(getIt<AuthRepository>()));
   getIt.registerFactory(() => UpdateNicknameUseCase(getIt<AuthRepository>()));
   getIt.registerFactory(() => CheckNicknameDuplicateUseCase(getIt<AuthRepository>()));
+  getIt.registerFactory(() => GetCurrentUserUseCase(getIt<AuthRepository>()));
 }

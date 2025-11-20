@@ -43,7 +43,26 @@ class AuthDataSource {
     final user = _supabase.auth.currentUser;
     if (user == null) return null;
 
-    return _convertToUserModel(user);
+    // users 테이블에서 닉네임 가져오기
+    try {
+      final response = await _supabase
+          .from('users')
+          .select('nickname, profile_image_url')
+          .eq('id', user.id)
+          .maybeSingle();
+
+      return UserModel(
+        id: user.id,
+        email: user.email ?? '',
+        nickname: response?['nickname'],
+        profileImageUrl: response?['profile_image_url'],
+        createdAt: DateTime.parse(user.createdAt),
+        lastLoginAt: DateTime.now(),
+      );
+    } catch (e) {
+      // users 테이블에 데이터 없으면 기본 userMetadata 사용
+      return _convertToUserModel(user);
+    }
   }
 
   /// 로그인 상태 확인
