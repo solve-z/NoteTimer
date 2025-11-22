@@ -60,7 +60,7 @@
 
 ## ✅ 3. Dependency Injection 설정
 
-- [ ] `lib/core/di/service_locator.dart`에 수동 등록
+- [x] `lib/core/di/service_locator.dart`에 수동 등록
   - DataSource: `registerSingleton<NoteLocalDataSource>`
   - DataSource: `registerSingleton<FocusRecordLocalDataSource>`
   - Repository: `registerSingleton<NoteRepository>(NoteRepositoryImpl(getIt()))`
