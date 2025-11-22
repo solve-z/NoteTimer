@@ -73,17 +73,18 @@
 ## ✅ 4. Presentation Layer - Provider 작성
 
 ### 4-1. State 클래스 정의
-- [ ] `lib/presentation/main/provider/main_state.dart` 생성
+- [x] `lib/presentation/main/provider/main_state.dart` 생성
   - `selectedDate` (DateTime)
   - `pinnedNotes` (List<NoteModel>)
   - `focusRecords` (List<FocusRecordModel>)
   - `totalFocusTime` (int, 초 단위)
   - `isTimeTableVisible` (bool)
   - `isTodoVisible` (bool)
+  - `copyWith` 메서드 포함 (Riverpod용 순수 Dart 클래스)
 
 ### 4-2. Provider 작성
-- [ ] `lib/presentation/main/provider/main_provider.dart` 생성
-  - `StateNotifierProvider<MainNotifier, MainState>`
+- [x] `lib/presentation/main/provider/main_provider.dart` 생성
+  - Riverpod `StateProvider` 또는 함수형 Provider 사용
   - UseCase들만 의존성 주입 (❌ Repository/DataSource 직접 참조 금지)
   - 메서드: `loadDataByDate(DateTime)`, `toggleTimeTable()`, `toggleTodo()`
 
