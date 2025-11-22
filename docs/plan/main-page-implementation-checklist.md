@@ -35,24 +35,24 @@
 ## ✅ 2. Data Layer 작성
 
 ### 2-1. DataSource 작성
-- [ ] `lib/data/data_source/local_storage/note_local_data_source.dart`
+- [x] `lib/data/data_source/local_storage/note_local_data_source.dart`
   - Hive Box<NoteModel> 사용
-- [ ] `lib/data/data_source/local_storage/focus_record_local_data_source.dart`
+- [x] `lib/data/data_source/local_storage/focus_record_local_data_source.dart`
   - Hive Box<FocusRecordModel> 사용
 
 ### 2-2. Repository 구현
-- [ ] `lib/data/repository_impl/note_repository_impl.dart`
+- [x] `lib/data/repository_impl/note_repository_impl.dart`
   - NoteRepository 인터페이스 구현
   - NoteLocalDataSource 의존성 주입
-- [ ] `lib/data/repository_impl/focus_record_repository_impl.dart`
+- [x] `lib/data/repository_impl/focus_record_repository_impl.dart`
   - FocusRecordRepository 인터페이스 구현
   - FocusRecordLocalDataSource 의존성 주입
 
 ### 2-3. Hive 설정 업데이트
-- [ ] `lib/data/data_source/local_storage/hive_setup.dart`에 TypeAdapter 등록
+- [x] `lib/data/data_source/local_storage/hive_setup.dart`에 TypeAdapter 등록
   - `Hive.registerAdapter(NoteModelAdapter())`
   - `Hive.registerAdapter(FocusRecordModelAdapter())`
-- [ ] Hive Box 열기 추가
+- [x] Hive Box 열기 추가
   - `await Hive.openBox<NoteModel>('notes')`
   - `await Hive.openBox<FocusRecordModel>('focus_records')`
 
