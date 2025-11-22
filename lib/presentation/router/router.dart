@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:note_timer/presentation/pages/home/home_page.dart';
+import 'package:note_timer/presentation/pages/main/main_page.dart';
 import 'package:note_timer/presentation/pages/onboarding/onboarding_page.dart';
 import 'package:note_timer/presentation/pages/nickname/nickname_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -64,7 +64,7 @@ GoRouter createRouter(bool isLoggedIn) {
         name: 'main',
         pageBuilder:
             (context, state) =>
-                MaterialPage(key: state.pageKey, child: const HomePage()),
+                MaterialPage(key: state.pageKey, child: const MainPage()),
       ),
     ],
   );

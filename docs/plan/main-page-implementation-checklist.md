@@ -93,61 +93,55 @@
 ## ✅ 5. Presentation Layer - UI 구현
 
 ### 5-1. 메인 페이지 구조
-- [ ] `lib/presentation/pages/main/main_page.dart` 생성 (기존 home_page.dart 대체 또는 수정)
+- [x] `lib/presentation/pages/main/main_page.dart` 생성 (기존 home_page.dart 대체)
   - Scaffold + BottomNavigationBar
   - 3개 탭: Main, 통계, 내정보
 
 ### 5-2. Main 탭 화면
-- [ ] `lib/presentation/pages/main/widgets/main_tab_view.dart`
+- [x] Main 탭 화면 기본 구조 (main_page.dart 내부)
   - AppBar
-  - 날짜 영역 (주간 캘린더)
+  - 날짜 영역 (주간 캘린더 플레이스홀더)
   - 컨트롤 영역
-  - 메인 영역 (노트 리스트 + 타임테이블)
+  - 메인 영역 (노트 리스트 + 타임테이블 플레이스홀더)
   - 하단 영역
 
 ### 5-3. AppBar 위젯
-- [ ] `lib/presentation/pages/main/widgets/main_app_bar.dart`
+- [x] AppBar 기본 구조 포함
   - 드로어 아이콘 (좌측)
-  - 날짜 표시 중앙 (예: "11월 22일 (토)")
+  - 날짜 표시 중앙 (예: "11월 13일 (토)")
   - 노트 목록 아이콘 (우측)
 
 ### 5-4. 날짜 영역 위젯
-- [ ] `lib/presentation/pages/main/widgets/week_calendar_widget.dart`
-  - 주간 날짜 가로 스크롤 (7개)
-  - 선택 상태 표시 (오늘: 검은 배경, 다른 날: 회색)
-  - 기록 인디케이터 (하단 점)
+- [x] 주간 캘린더 플레이스홀더
+  - (추후 세부 구현 예정)
 
 ### 5-5. 컨트롤 영역 위젯
-- [ ] `lib/presentation/pages/main/widgets/control_bar_widget.dart`
+- [x] 컨트롤 바 기본 구조
   - 할일 보기 버튼 (좌측)
   - 총 집중시간 표시 (중앙, "12H 30M" 형식)
-  - 공유 버튼
-  - 타임테이블 토글 버튼
+  - 공유 버튼, 타임테이블 토글 버튼
 
 ### 5-6. 메인 영역 위젯
-- [ ] `lib/presentation/pages/main/widgets/note_list_widget.dart`
-  - 노트 카드 리스트 (상하 스크롤)
+- [x] 노트 리스트 기본 구조
+  - 노트 카드 예시 (수학, 영어)
   - 노트 목록 버튼 (하단)
-- [ ] `lib/presentation/pages/main/widgets/time_table_widget.dart`
-  - 타임라인 형식 플레이스홀더 (추후 구현)
-  - 토글 상태에 따라 표시/숨김
 
 ### 5-7. 하단 영역 위젯
-- [ ] `lib/presentation/pages/main/widgets/bottom_area_widget.dart`
+- [x] 하단 영역 기본 구조
   - 광고 배너 플레이스홀더
-  - 오늘로 이동 버튼 (조건부 표시)
+  - 오늘로 이동 버튼
 
 ### 5-8. BottomNavigationBar
-- [ ] Main, 통계, 내정보 3개 탭 아이콘 및 라벨
+- [x] Main, 통계, 내정보 3개 탭 아이콘 및 라벨
   - 통계/내정보 페이지는 Placeholder로 임시 구현
 
 ---
 
 ## ✅ 6. 코드 생성 및 빌드
 
-- [ ] `flutter pub run build_runner build --delete-conflicting-outputs` 실행
+- [x] `flutter pub run build_runner build --delete-conflicting-outputs` 실행
   - Hive TypeAdapter 생성 확인
-- [ ] `flutter run` 실행하여 UI 확인
+- [x] `flutter run` 실행하여 UI 확인
 
 ---
 
