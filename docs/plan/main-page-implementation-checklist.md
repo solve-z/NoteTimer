@@ -17,18 +17,18 @@
 - [x] Hive TypeAdapter 어노테이션 추가 (`@HiveType`, `@HiveField`)
 
 ### 1-2. Repository 인터페이스 정의
-- [ ] `lib/domain/repository/note_repository.dart` 생성
+- [x] `lib/domain/repository/note_repository.dart` 생성
   - `Future<List<NoteModel>> getPinnedNotes()`
   - `Future<List<NoteModel>> getNotesByDate(DateTime date)`
-- [ ] `lib/domain/repository/focus_record_repository.dart` 생성
+- [x] `lib/domain/repository/focus_record_repository.dart` 생성
   - `Future<List<FocusRecordModel>> getRecordsByDate(DateTime date)`
   - `Future<int> getTotalFocusTimeByDate(DateTime date)` (초 단위)
 
 ### 1-3. UseCase 작성
-- [ ] `lib/domain/usecase/note/get_pinned_notes_usecase.dart`
-- [ ] `lib/domain/usecase/note/get_notes_by_date_usecase.dart`
-- [ ] `lib/domain/usecase/focus/get_records_by_date_usecase.dart`
-- [ ] `lib/domain/usecase/focus/get_total_focus_time_usecase.dart`
+- [x] `lib/domain/usecase/note/get_pinned_notes_usecase.dart`
+- [x] `lib/domain/usecase/note/get_notes_by_date_usecase.dart`
+- [x] `lib/domain/usecase/focus/get_records_by_date_usecase.dart`
+- [x] `lib/domain/usecase/focus/get_total_focus_time_usecase.dart`
 
 ---
 
