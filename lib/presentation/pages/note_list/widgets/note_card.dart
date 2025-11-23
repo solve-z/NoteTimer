@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../domain/model/note_model.dart';
 import '../../../note_list/provider/note_list_provider.dart';
 
@@ -16,31 +17,31 @@ class NoteCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      child: Stack(
-        children: [
-          // 메인 카드
-          GestureDetector(
-            onTap: () {
-              // TODO: 노트 상세 페이지로 이동
-            },
-            child: Container(
-              width: 150.w,
-              height: 180.h,
-              decoration: BoxDecoration(
-                color: Color(note.colorValue),
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              padding: EdgeInsets.all(12.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 20.h), // 고정 아이콘 공간
-                  // 노트 제목
-                  Expanded(
+    return Stack(
+      children: [
+        // 메인 카드
+        GestureDetector(
+          onTap: () {
+            // TODO: 노트 상세 페이지로 이동
+          },
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              color: Color(note.colorValue),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            padding: EdgeInsets.all(12.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 32.h), // 상단 아이콘 공간 (체크박스/고정 핀)
+                // 노트 제목
+                Expanded(
+                  child: Center(
                     child: Text(
                       note.title,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 14.sp,
@@ -50,36 +51,41 @@ class NoteCard extends ConsumerWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  // 체크박스 (사용중 탭에서만 표시)
-                  if (!isArchived)
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Checkbox(
-                        value: note.isSelectedForToday,
-                        onChanged: (value) {
-                          ref.read(noteListProvider.notifier).toggleSelectForToday(note.id);
-                        },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.r),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-          // 고정 아이콘 (좌측 상단)
-          if (note.isPinned)
-            Positioned(
-              top: 8.h,
-              left: 8.w,
-              child: Icon(
-                Icons.push_pin,
-                color: Colors.red,
-                size: 20.sp,
-              ),
-            ),
-          // 더보기 메뉴 (우측 상단)
+        ),
+        // 좌측 상단: 체크박스 또는 고정 아이콘
+        if (!isArchived)
+          Positioned(
+            top: 4.h,
+            left: 4.w,
+            child: note.isPinned
+                ? // 고정된 노트: 고정 아이콘 표시
+                Padding(
+                    padding: EdgeInsets.all(8.w),
+                    child: Icon(
+                      Icons.push_pin,
+                      color: Colors.red,
+                      size: 24.sp,
+                    ),
+                  )
+                : // 일반 노트: 체크박스 표시
+                Transform.scale(
+                    scale: 1.1,
+                    child: Checkbox(
+                      value: note.isSelectedForToday,
+                      onChanged: (value) {
+                        ref.read(noteListProvider.notifier).toggleSelectForToday(note.id);
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+                    ),
+                  ),
+          ),
+        // 더보기 메뉴 (우측 상단)
           Positioned(
             top: 4.h,
             right: 4.w,
@@ -95,7 +101,15 @@ class NoteCard extends ConsumerWidget {
                     await ref.read(noteListProvider.notifier).togglePin(note.id);
                     break;
                   case 'edit':
-                    // TODO: 노트 수정 페이지로 이동
+                    await context.push('/note-edit', extra: note);
+                    // 수정 후 돌아왔을 때 목록 새로고침
+                    if (context.mounted) {
+                      if (isArchived) {
+                        await ref.read(noteListProvider.notifier).loadArchivedNotes();
+                      } else {
+                        await ref.read(noteListProvider.notifier).loadActiveNotes();
+                      }
+                    }
                     break;
                   case 'archive':
                     if (isArchived) {
@@ -149,7 +163,6 @@ class NoteCard extends ConsumerWidget {
             ),
           ),
         ],
-      ),
-    );
+      );
   }
 }

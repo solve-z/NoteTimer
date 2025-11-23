@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import '../../note_list/provider/note_list_provider.dart';
 import 'widgets/note_list_view.dart';
 
@@ -138,28 +139,42 @@ class _NoteListPageState extends ConsumerState<NoteListPage>
             ),
           ),
           // 광고 배너 플레이스홀더
-          Container(
-            width: double.infinity,
-            height: 50.h,
-            color: Colors.red,
-            alignment: Alignment.center,
-            child: Text(
-              '광고배너',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
+          SafeArea(
+            top: false,
+            child: Container(
+              width: double.infinity,
+              height: 50.h,
+              color: Colors.red,
+              alignment: Alignment.center,
+              child: Text(
+                '광고배너',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: 노트 추가 페이지로 이동
-        },
-        backgroundColor: const Color(0xFFFFD147),
-        child: Icon(Icons.add, color: Colors.black, size: 28.sp),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 50.h), // 광고 배너 높이만큼 위로
+        child: FloatingActionButton(
+          onPressed: () async {
+            await context.push('/note-add');
+            // 노트 추가 후 돌아왔을 때 목록 새로고침
+            if (mounted) {
+              if (_tabController.index == 0) {
+                ref.read(noteListProvider.notifier).loadActiveNotes();
+              } else {
+                ref.read(noteListProvider.notifier).loadArchivedNotes();
+              }
+            }
+          },
+          backgroundColor: const Color(0xFFFFD147),
+          child: Icon(Icons.add, color: Colors.black, size: 28.sp),
+        ),
       ),
     );
   }
