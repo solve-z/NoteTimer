@@ -28,7 +28,7 @@ dependencies:
   hive_flutter: ^1.1.0
 
   # SVG
-  flutter_svg: ^2.0.10
+  flutter_svg: ^2.2.2
 
   # Responsive UI
   flutter_screenutil: ^5.9.0
