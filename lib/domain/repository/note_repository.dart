@@ -13,6 +13,9 @@ abstract class NoteRepository {
   /// 보관함 노트 목록 조회 (isArchived = true)
   Future<List<NoteModel>> getAllArchivedNotes();
 
+  /// 특정 노트 조회
+  Future<NoteModel?> getNoteById(String noteId);
+
   /// 노트 추가
   Future<void> createNote(NoteModel note);
 

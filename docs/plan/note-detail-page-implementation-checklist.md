@@ -30,17 +30,17 @@
   - `getMemosByNoteId()`, `getMemosByDate()`, `getMemosByNoteIdAndDate()`
   - `createMemo()`, `updateMemo()`, `deleteMemo()`
   - `moveMemoToDate()`, `updateMemoOrder()`, `getMemoById()`
-- [ ] NoteRepository 확장 (getNoteById 메서드 추가 필요 시)
+- [x] NoteRepository 확장 (`getNoteById()` 메서드 추가)
 
 ### 1-3. UseCase 작성
 
 - [x] `lib/domain/usecase/todo/get_todos_by_note_id_usecase.dart`
-- [ ] `lib/domain/usecase/todo/toggle_todo_complete_usecase.dart`
-- [ ] `lib/domain/usecase/todo/move_todo_to_date_usecase.dart`
-- [ ] `lib/domain/usecase/todo/delete_todo_usecase.dart`
-- [ ] `lib/domain/usecase/todo/update_todo_usecase.dart`
-- [ ] `lib/domain/usecase/memo/get_memos_by_note_id_usecase.dart`
-- [ ] `lib/domain/usecase/note/get_note_by_id_usecase.dart` (필요 시)
+- [x] `lib/domain/usecase/todo/toggle_todo_complete_usecase.dart`
+- [x] `lib/domain/usecase/todo/move_todo_to_date_usecase.dart`
+- [x] `lib/domain/usecase/todo/delete_todo_usecase.dart`
+- [x] `lib/domain/usecase/todo/update_todo_usecase.dart`
+- [x] `lib/domain/usecase/memo/get_memos_by_note_id_usecase.dart`
+- [x] `lib/domain/usecase/note/get_note_by_id_usecase.dart`
 
 ---
 
