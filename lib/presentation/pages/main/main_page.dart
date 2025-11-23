@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -96,7 +97,7 @@ class _MainPageState extends State<MainPage> {
             child: Center(
               child: GestureDetector(
                 onTap: () {
-                  // TODO: 노트 목록 화면으로 이동
+                  context.push('/note-list');
                 },
                 child: SvgPicture.asset(
                   'assets/icons/clipboard.svg',
@@ -416,7 +417,7 @@ class _MainPageState extends State<MainPage> {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    // TODO: 노트 목록 화면으로 이동
+                    context.push('/note-list');
                   },
                   child: Container(
                     width: 120.w,

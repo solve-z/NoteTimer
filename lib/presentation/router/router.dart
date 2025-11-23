@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:note_timer/presentation/pages/main/main_page.dart';
 import 'package:note_timer/presentation/pages/onboarding/onboarding_page.dart';
 import 'package:note_timer/presentation/pages/nickname/nickname_page.dart';
+import 'package:note_timer/presentation/pages/note_list/note_list_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/di/service_locator.dart';
 import '../../domain/usecase/auth/get_current_user_usecase.dart';
@@ -65,6 +66,13 @@ GoRouter createRouter(bool isLoggedIn) {
         pageBuilder:
             (context, state) =>
                 MaterialPage(key: state.pageKey, child: const MainPage()),
+      ),
+      GoRoute(
+        path: '/note-list',
+        name: 'note-list',
+        pageBuilder:
+            (context, state) =>
+                MaterialPage(key: state.pageKey, child: const NoteListPage()),
       ),
     ],
   );

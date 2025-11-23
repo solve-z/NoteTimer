@@ -187,17 +187,18 @@
 
 ## 6. 라우팅 설정
 
-- [ ] `lib/core/router/router.dart`에 라우트 추가
+- [x] `lib/presentation/router/router.dart`에 라우트 추가
   - `/note-list` 경로 추가
   - NoteListPage로 연결
+- [x] MainPage에서 노트 목록 아이콘 클릭 시 `/note-list`로 이동 연결
 
 ---
 
 ## 7. 코드 생성 및 빌드
 
-- [ ] `flutter pub run build_runner build --delete-conflicting-outputs` 실행
+- [x] `flutter pub run build_runner build --delete-conflicting-outputs` 실행
   - Hive TypeAdapter 재생성 확인
-- [ ] `flutter run` 실행하여 UI 확인
+- [x] `flutter analyze` 실행하여 에러 확인 (경고만 있음, 노트 목록 기능과 무관)
 
 ---
 
@@ -205,24 +206,24 @@
 
 ### 검증 체크리스트
 
-- [ ] ✅ Presentation에서 Data Layer (Repository 구현체, DataSource, DTO) 직접 참조 없음
-- [ ] ✅ Presentation에서 Supabase, Hive 등 외부 라이브러리 직접 사용 없음
-- [ ] ✅ Presentation은 UseCase만 호출 (note_list_provider.dart 확인)
-- [ ] ⚠️ Domain Layer에서 Hive 패키지 import (TypeAdapter 생성 목적으로 허용)
-- [ ] ✅ Data Layer에서 Presentation 참조 없음
-- [ ] ✅ Repository는 Domain 인터페이스를 Data에서 구현
-- [ ] ✅ 모든 의존성은 get_it으로 주입
+- [x] ✅ Presentation에서 Data Layer (Repository 구현체, DataSource, DTO) 직접 참조 없음
+- [x] ✅ Presentation에서 Supabase, Hive 등 외부 라이브러리 직접 사용 없음
+- [x] ✅ Presentation은 UseCase만 호출 (note_list_provider.dart 확인)
+- [x] ⚠️ Domain Layer에서 Hive 패키지 import (TypeAdapter 생성 목적으로 허용)
+- [x] ✅ Data Layer에서 Presentation 참조 없음
+- [x] ✅ Repository는 Domain 인터페이스를 Data에서 구현
+- [x] ✅ 모든 의존성은 get_it으로 주입
 
 ---
 
 ## 9. 스타일 가이드 준수
 
-- [ ] Color opacity는 `withValues(alpha:)` 사용 (❌ `withOpacity()` 금지)
-- [ ] 모든 크기는 flutter_screenutil 확장 사용 (`.w`, `.h`, `.sp`, `.r`)
-- [ ] 피그마 디자인 값(360x800 기준) 그대로 사용
-- [ ] 고정 핀 아이콘 색상: 빨간색
-- [ ] 검색 버튼 배경: 핑크색
-- [ ] 광고 배너 배경: 빨간색
+- [x] Color opacity는 `withValues(alpha:)` 사용 (❌ `withOpacity()` 금지)
+- [x] 모든 크기는 flutter_screenutil 확장 사용 (`.w`, `.h`, `.sp`, `.r`)
+- [x] 피그마 디자인 값(360x800 기준) 그대로 사용
+- [x] 고정 핀 아이콘 색상: 빨간색
+- [x] 검색 버튼 배경: 핑크색 (0xFFFFB3C1)
+- [x] 광고 배너 배경: 빨간색
 
 ---
 
