@@ -108,7 +108,7 @@
 
 ### 4-1. State 클래스 정의
 
-- [ ] `lib/presentation/note_detail/provider/note_detail_state.dart` 생성
+- [x] `lib/presentation/note_detail/provider/note_detail_state.dart` 생성
   - `note` (NoteModel?) - 현재 노트 정보
   - `todos` (List<TodoModel>) - 할일 목록
   - `memos` (List<MemoModel>) - 메모 목록
@@ -121,9 +121,9 @@
 
 ### 4-2. Provider 작성
 
-- [ ] `lib/presentation/note_detail/provider/note_detail_provider.dart` 생성
-  - Riverpod `StateNotifierProvider` 사용
-  - UseCase들만 의존성 주입
+- [x] `lib/presentation/note_detail/provider/note_detail_provider.dart` 생성
+  - Riverpod `StateNotifierProvider.family` 사용 (noteId 파라미터)
+  - UseCase들만 의존성 주입 (Clean Architecture 준수)
   - 메서드:
     - `loadNoteDetail(String noteId)` - 노트 정보 및 할일/메모 로드
     - `toggleTodoComplete(String todoId)` - 할일 완료/미완료 토글
