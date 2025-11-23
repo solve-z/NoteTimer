@@ -18,6 +18,17 @@ import '../../domain/usecase/auth/check_nickname_duplicate_usecase.dart';
 import '../../domain/usecase/auth/get_current_user_usecase.dart';
 import '../../domain/usecase/note/get_pinned_notes_usecase.dart';
 import '../../domain/usecase/note/get_notes_by_date_usecase.dart';
+import '../../domain/usecase/note/get_all_active_notes_usecase.dart';
+import '../../domain/usecase/note/get_all_archived_notes_usecase.dart';
+import '../../domain/usecase/note/create_note_usecase.dart';
+import '../../domain/usecase/note/update_note_usecase.dart';
+import '../../domain/usecase/note/delete_note_usecase.dart';
+import '../../domain/usecase/note/archive_note_usecase.dart';
+import '../../domain/usecase/note/unarchive_note_usecase.dart';
+import '../../domain/usecase/note/toggle_pin_note_usecase.dart';
+import '../../domain/usecase/note/toggle_select_for_today_usecase.dart';
+import '../../domain/usecase/note/update_note_order_usecase.dart';
+import '../../domain/usecase/note/reset_today_selection_usecase.dart';
 import '../../domain/usecase/focus/get_records_by_date_usecase.dart';
 import '../../domain/usecase/focus/get_total_focus_time_usecase.dart';
 
@@ -58,6 +69,17 @@ Future<void> setupServiceLocator() async {
   // Use Cases - Note
   getIt.registerFactory(() => GetPinnedNotesUseCase(getIt<NoteRepository>()));
   getIt.registerFactory(() => GetNotesByDateUseCase(getIt<NoteRepository>()));
+  getIt.registerFactory(() => GetAllActiveNotesUseCase(getIt<NoteRepository>()));
+  getIt.registerFactory(() => GetAllArchivedNotesUseCase(getIt<NoteRepository>()));
+  getIt.registerFactory(() => CreateNoteUseCase(getIt<NoteRepository>()));
+  getIt.registerFactory(() => UpdateNoteUseCase(getIt<NoteRepository>()));
+  getIt.registerFactory(() => DeleteNoteUseCase(getIt<NoteRepository>()));
+  getIt.registerFactory(() => ArchiveNoteUseCase(getIt<NoteRepository>()));
+  getIt.registerFactory(() => UnarchiveNoteUseCase(getIt<NoteRepository>()));
+  getIt.registerFactory(() => TogglePinNoteUseCase(getIt<NoteRepository>()));
+  getIt.registerFactory(() => ToggleSelectForTodayUseCase(getIt<NoteRepository>()));
+  getIt.registerFactory(() => UpdateNoteOrderUseCase(getIt<NoteRepository>()));
+  getIt.registerFactory(() => ResetTodaySelectionUseCase(getIt<NoteRepository>()));
 
   // Use Cases - Focus
   getIt.registerFactory(() => GetRecordsByDateUseCase(getIt<FocusRecordRepository>()));

@@ -12,7 +12,7 @@
 
 ### 1-1. 도메인 모델 확장
 
-- [ ] `lib/domain/model/note_model.dart`에 필드 추가 확인
+- [x] `lib/domain/model/note_model.dart`에 필드 추가 확인
   - `isArchived` (bool, 보관 여부)
   - `isSelectedForToday` (bool, 오늘 사용 체크 여부)
   - `sortOrder` (int, 정렬 순서)
@@ -20,7 +20,7 @@
 
 ### 1-2. Repository 인터페이스 확장
 
-- [ ] `lib/domain/repository/note_repository.dart`에 메서드 추가
+- [x] `lib/domain/repository/note_repository.dart`에 메서드 추가
   - `Future<List<NoteModel>> getAllActiveNotes()` - 사용중 노트 목록 (isArchived = false)
   - `Future<List<NoteModel>> getAllArchivedNotes()` - 보관함 노트 목록 (isArchived = true)
   - `Future<void> createNote(NoteModel note)` - 노트 추가
@@ -35,17 +35,17 @@
 
 ### 1-3. UseCase 작성
 
-- [ ] `lib/domain/usecase/note/get_all_active_notes_usecase.dart`
-- [ ] `lib/domain/usecase/note/get_all_archived_notes_usecase.dart`
-- [ ] `lib/domain/usecase/note/create_note_usecase.dart`
-- [ ] `lib/domain/usecase/note/update_note_usecase.dart`
-- [ ] `lib/domain/usecase/note/delete_note_usecase.dart`
-- [ ] `lib/domain/usecase/note/archive_note_usecase.dart`
-- [ ] `lib/domain/usecase/note/unarchive_note_usecase.dart`
-- [ ] `lib/domain/usecase/note/toggle_pin_note_usecase.dart`
-- [ ] `lib/domain/usecase/note/toggle_select_for_today_usecase.dart`
-- [ ] `lib/domain/usecase/note/update_note_order_usecase.dart`
-- [ ] `lib/domain/usecase/note/reset_today_selection_usecase.dart`
+- [x] `lib/domain/usecase/note/get_all_active_notes_usecase.dart`
+- [x] `lib/domain/usecase/note/get_all_archived_notes_usecase.dart`
+- [x] `lib/domain/usecase/note/create_note_usecase.dart`
+- [x] `lib/domain/usecase/note/update_note_usecase.dart`
+- [x] `lib/domain/usecase/note/delete_note_usecase.dart`
+- [x] `lib/domain/usecase/note/archive_note_usecase.dart`
+- [x] `lib/domain/usecase/note/unarchive_note_usecase.dart`
+- [x] `lib/domain/usecase/note/toggle_pin_note_usecase.dart`
+- [x] `lib/domain/usecase/note/toggle_select_for_today_usecase.dart`
+- [x] `lib/domain/usecase/note/update_note_order_usecase.dart`
+- [x] `lib/domain/usecase/note/reset_today_selection_usecase.dart`
 
 ---
 
@@ -53,7 +53,7 @@
 
 ### 2-1. DataSource 확장
 
-- [ ] `lib/data/data_source/local_storage/note_local_data_source.dart`에 메서드 추가
+- [x] `lib/data/data_source/local_storage/note_local_data_source.dart`에 메서드 추가
   - `Future<List<NoteModel>> getAllActiveNotes()`
   - `Future<List<NoteModel>> getAllArchivedNotes()`
   - `Future<void> createNote(NoteModel note)`
@@ -63,20 +63,20 @@
 
 ### 2-2. Repository 구현 확장
 
-- [ ] `lib/data/repository_impl/note_repository_impl.dart`에 메서드 구현
+- [x] `lib/data/repository_impl/note_repository_impl.dart`에 메서드 구현
   - NoteRepository 인터페이스의 모든 메서드 구현
   - NoteLocalDataSource 의존성 주입 사용
 
 ### 2-3. Hive 코드 재생성
 
-- [ ] 모델 필드 추가 후 `flutter pub run build_runner build --delete-conflicting-outputs` 실행
+- [x] 모델 필드 추가 후 `flutter pub run build_runner build --delete-conflicting-outputs` 실행
   - `NoteModelAdapter` 재생성 확인
 
 ---
 
 ## 3. Dependency Injection 설정
 
-- [ ] `lib/core/di/service_locator.dart`에 UseCase 등록
+- [x] `lib/core/di/service_locator.dart`에 UseCase 등록
   - `registerFactory<GetAllActiveNotesUseCase>(() => GetAllActiveNotesUseCase(getIt()))`
   - `registerFactory<GetAllArchivedNotesUseCase>(() => GetAllArchivedNotesUseCase(getIt()))`
   - `registerFactory<CreateNoteUseCase>(() => CreateNoteUseCase(getIt()))`
