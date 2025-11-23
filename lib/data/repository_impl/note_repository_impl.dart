@@ -71,4 +71,14 @@ class NoteRepositoryImpl implements NoteRepository {
   Future<void> resetTodaySelection() async {
     return await _localDataSource.resetTodaySelection();
   }
+
+  @override
+  Future<NoteModel?> getNoteById(String noteId) async {
+    final notes = await _localDataSource.getAllNotes();
+    try {
+      return notes.firstWhere((note) => note.id == noteId);
+    } catch (e) {
+      return null;
+    }
+  }
 }

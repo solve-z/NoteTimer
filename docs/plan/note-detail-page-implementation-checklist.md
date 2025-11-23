@@ -48,28 +48,34 @@
 
 ### 2-1. DataSource 생성
 
-- [ ] `TodoLocalDataSource` 생성 (`lib/data/data_source/local_storage/todo_local_data_source.dart`)
+- [x] `TodoLocalDataSource` 생성 (`lib/data/data_source/local_storage/todo_local_data_source.dart`)
   - Hive Box 사용하여 CRUD 구현
-  - `getTodosByNoteId()`, `getTodosByDate()`, `createTodo()`, `updateTodo()`, `deleteTodo()` 등
+  - `getTodosByNoteId()`, `getTodosByDate()`, `getTodosByNoteIdAndDate()`
+  - `createTodo()`, `updateTodo()`, `deleteTodo()`, `toggleTodoCompletion()`, `moveTodoToDate()` 등
 
-- [ ] `MemoLocalDataSource` 생성 (`lib/data/data_source/local_storage/memo_local_data_source.dart`)
+- [x] `MemoLocalDataSource` 생성 (`lib/data/data_source/local_storage/memo_local_data_source.dart`)
   - Hive Box 사용하여 CRUD 구현
-  - `getMemosByNoteId()`, `getMemosByDate()`, `createMemo()`, `updateMemo()`, `deleteMemo()` 등
+  - `getMemosByNoteId()`, `getMemosByDate()`, `getMemosByNoteIdAndDate()`
+  - `createMemo()`, `updateMemo()`, `deleteMemo()`, `moveMemoToDate()`, `getMemoById()` 등
 
 ### 2-2. Repository 구현 생성
 
-- [ ] `TodoRepositoryImpl` 생성 (`lib/data/repository_impl/todo_repository_impl.dart`)
+- [x] `TodoRepositoryImpl` 생성 (`lib/data/repository_impl/todo_repository_impl.dart`)
   - TodoRepository 인터페이스 구현
   - TodoLocalDataSource 의존성 주입
 
-- [ ] `MemoRepositoryImpl` 생성 (`lib/data/repository_impl/memo_repository_impl.dart`)
+- [x] `MemoRepositoryImpl` 생성 (`lib/data/repository_impl/memo_repository_impl.dart`)
   - MemoRepository 인터페이스 구현
   - MemoLocalDataSource 의존성 주입
 
+- [x] `NoteRepositoryImpl`에 `getNoteById()` 메서드 구현 추가
+
 ### 2-3. Hive 설정
 
-- [ ] `hive_setup.dart`에 TodoModel, MemoModel TypeAdapter 등록
-- [ ] Todo, Memo Box 초기화 코드 추가
+- [x] `hive_setup.dart`에 TodoModel, MemoModel import 추가
+- [x] TodoModelAdapter, MemoModelAdapter 등록 추가
+- [x] Todo, Memo Box 초기화 코드 추가
+- [x] build_runner 실행하여 TypeAdapter 코드 생성 (`.g.dart` 파일)
 
 ---
 
