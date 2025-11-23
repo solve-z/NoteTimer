@@ -3,14 +3,22 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../data/data_source/remote/auth_data_source.dart';
 import '../../data/data_source/local_storage/note_local_data_source.dart';
 import '../../data/data_source/local_storage/focus_record_local_data_source.dart';
+import '../../data/data_source/local_storage/todo_local_data_source.dart';
+import '../../data/data_source/local_storage/memo_local_data_source.dart';
 import '../../data/repository_impl/auth_repository_impl.dart';
 import '../../data/repository_impl/note_repository_impl.dart';
 import '../../data/repository_impl/focus_record_repository_impl.dart';
+import '../../data/repository_impl/todo_repository_impl.dart';
+import '../../data/repository_impl/memo_repository_impl.dart';
 import '../../domain/repository/auth_repository.dart';
 import '../../domain/repository/note_repository.dart';
 import '../../domain/repository/focus_record_repository.dart';
+import '../../domain/repository/todo_repository.dart';
+import '../../domain/repository/memo_repository.dart';
 import '../../domain/model/note_model.dart';
 import '../../domain/model/focus_record_model.dart';
+import '../../domain/model/todo_model.dart';
+import '../../domain/model/memo_model.dart';
 import '../../domain/usecase/auth/sign_in_with_google_usecase.dart';
 import '../../domain/usecase/auth/sign_out_usecase.dart';
 import '../../domain/usecase/auth/update_nickname_usecase.dart';
@@ -31,6 +39,13 @@ import '../../domain/usecase/note/update_note_order_usecase.dart';
 import '../../domain/usecase/note/reset_today_selection_usecase.dart';
 import '../../domain/usecase/focus/get_records_by_date_usecase.dart';
 import '../../domain/usecase/focus/get_total_focus_time_usecase.dart';
+import '../../domain/usecase/todo/get_todos_by_note_id_usecase.dart';
+import '../../domain/usecase/todo/toggle_todo_complete_usecase.dart';
+import '../../domain/usecase/todo/move_todo_to_date_usecase.dart';
+import '../../domain/usecase/todo/delete_todo_usecase.dart';
+import '../../domain/usecase/todo/update_todo_usecase.dart';
+import '../../domain/usecase/memo/get_memos_by_note_id_usecase.dart';
+import '../../domain/usecase/note/get_note_by_id_usecase.dart';
 
 final getIt = GetIt.instance;
 
@@ -45,6 +60,12 @@ Future<void> setupServiceLocator() async {
   getIt.registerSingleton<FocusRecordLocalDataSource>(
     FocusRecordLocalDataSource(Hive.box<FocusRecordModel>('focus_records')),
   );
+  getIt.registerSingleton<TodoLocalDataSource>(
+    TodoLocalDataSource(Hive.box<TodoModel>('todos')),
+  );
+  getIt.registerSingleton<MemoLocalDataSource>(
+    MemoLocalDataSource(Hive.box<MemoModel>('memos')),
+  );
 
   // Repository
   getIt.registerSingleton<AuthRepository>(
@@ -57,6 +78,12 @@ Future<void> setupServiceLocator() async {
   );
   getIt.registerSingleton<FocusRecordRepository>(
     FocusRecordRepositoryImpl(getIt<FocusRecordLocalDataSource>()),
+  );
+  getIt.registerSingleton<TodoRepository>(
+    TodoRepositoryImpl(getIt<TodoLocalDataSource>()),
+  );
+  getIt.registerSingleton<MemoRepository>(
+    MemoRepositoryImpl(getIt<MemoLocalDataSource>()),
   );
 
   // Use Cases - Auth
@@ -84,4 +111,17 @@ Future<void> setupServiceLocator() async {
   // Use Cases - Focus
   getIt.registerFactory(() => GetRecordsByDateUseCase(getIt<FocusRecordRepository>()));
   getIt.registerFactory(() => GetTotalFocusTimeUseCase(getIt<FocusRecordRepository>()));
+
+  // Use Cases - Todo
+  getIt.registerFactory(() => GetTodosByNoteIdUseCase(getIt<TodoRepository>()));
+  getIt.registerFactory(() => ToggleTodoCompleteUseCase(getIt<TodoRepository>()));
+  getIt.registerFactory(() => MoveTodoToDateUseCase(getIt<TodoRepository>()));
+  getIt.registerFactory(() => DeleteTodoUseCase(getIt<TodoRepository>()));
+  getIt.registerFactory(() => UpdateTodoUseCase(getIt<TodoRepository>()));
+
+  // Use Cases - Memo
+  getIt.registerFactory(() => GetMemosByNoteIdUseCase(getIt<MemoRepository>()));
+
+  // Use Cases - Note (추가)
+  getIt.registerFactory(() => GetNoteByIdUseCase(getIt<NoteRepository>()));
 }

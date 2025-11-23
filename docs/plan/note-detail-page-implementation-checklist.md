@@ -81,22 +81,26 @@
 
 ## 3. Dependency Injection 설정
 
-- [ ] `lib/core/di/service_locator.dart`에 DataSource 등록
-  - `registerSingleton<TodoLocalDataSource>(TodoLocalDataSource())`
-  - `registerSingleton<MemoLocalDataSource>(MemoLocalDataSource())`
+- [x] `lib/core/di/service_locator.dart`에 import 추가
+  - TodoLocalDataSource, MemoLocalDataSource
+  - TodoRepositoryImpl, MemoRepositoryImpl
+  - TodoRepository, MemoRepository
+  - TodoModel, MemoModel
+  - Todo/Memo UseCases
 
-- [ ] `lib/core/di/service_locator.dart`에 Repository 등록
-  - `registerSingleton<TodoRepository>(TodoRepositoryImpl(getIt()))`
-  - `registerSingleton<MemoRepository>(MemoRepositoryImpl(getIt()))`
+- [x] DataSource 등록
+  - `TodoLocalDataSource(Hive.box<TodoModel>('todos'))`
+  - `MemoLocalDataSource(Hive.box<MemoModel>('memos'))`
 
-- [ ] `lib/core/di/service_locator.dart`에 UseCase 등록
-  - `registerFactory<GetTodosByNoteIdUseCase>(() => GetTodosByNoteIdUseCase(getIt()))`
-  - `registerFactory<ToggleTodoCompleteUseCase>(() => ToggleTodoCompleteUseCase(getIt()))`
-  - `registerFactory<MoveTodoToDateUseCase>(() => MoveTodoToDateUseCase(getIt()))`
-  - `registerFactory<DeleteTodoUseCase>(() => DeleteTodoUseCase(getIt()))`
-  - `registerFactory<UpdateTodoUseCase>(() => UpdateTodoUseCase(getIt()))`
-  - `registerFactory<GetMemosByNoteIdUseCase>(() => GetMemosByNoteIdUseCase(getIt()))`
-  - `registerFactory<GetNoteByIdUseCase>(() => GetNoteByIdUseCase(getIt()))` (필요 시)
+- [x] Repository 등록
+  - `TodoRepositoryImpl(getIt<TodoLocalDataSource>())`
+  - `MemoRepositoryImpl(getIt<MemoLocalDataSource>())`
+
+- [x] UseCase 등록
+  - `GetTodosByNoteIdUseCase`, `ToggleTodoCompleteUseCase`
+  - `MoveTodoToDateUseCase`, `DeleteTodoUseCase`, `UpdateTodoUseCase`
+  - `GetMemosByNoteIdUseCase`
+  - `GetNoteByIdUseCase`
 
 ---
 
