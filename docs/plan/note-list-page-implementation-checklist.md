@@ -230,7 +230,7 @@
 ## 📝 추후 구현 예정 (이번 단계에서는 제외)
 
 - [x] 노트 추가/수정 페이지 - note-add-update-page-implementation-checklist.md
-- [ ] 노트 상세 페이지 - note-detail-page-implementation-checklist.md
+- [x] 노트 상세 페이지 - note-detail-page-implementation-checklist.md
 - 검색 페이지 (할일 & 메모 검색)
 - 오전 6시 자동 체크 초기화 (백그라운드 스케줄링)
 - 실제 광고 SDK 연동

@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import '../../main/provider/main_provider.dart';
 
-class MainPage extends StatefulWidget {
+class MainPage extends ConsumerStatefulWidget {
   const MainPage({super.key});
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  ConsumerState<MainPage> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageState extends ConsumerState<MainPage> {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // 초기 데이터 로드
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(loadDataByDateProvider)(DateTime.now());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +107,13 @@ class _MainPageState extends State<MainPage> {
             padding: EdgeInsets.only(right: 10.w),
             child: Center(
               child: GestureDetector(
-                onTap: () {
-                  context.push('/note-list');
+                onTap: () async {
+                  await context.push('/note-list');
+                  // 노트 목록에서 돌아왔을 때 데이터 새로고침
+                  if (mounted) {
+                    final state = ref.read(mainStateProvider);
+                    ref.read(loadDataByDateProvider)(state.selectedDate);
+                  }
                 },
                 child: SvgPicture.asset(
                   'assets/icons/clipboard.svg',
@@ -393,56 +409,84 @@ class _MainPageState extends State<MainPage> {
         ),
         // 노트 목록 영역
         Expanded(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              // 노트 카드 예시
-              _buildNoteCard(
-                '수학',
-                const Color(0xFFFFE7E7),
-                const Color(0xFFC67171),
-                '00:00:00',
-                isFirst: true,
-              ),
-              _buildNoteCard(
-                '영어',
-                const Color(0xFFE7F0FF),
-                const Color(0xFF7194C6),
-                '00:00:00',
-                isLastNote: true,
-              ),
+          child: Consumer(
+            builder: (context, ref, child) {
+              final mainState = ref.watch(mainStateProvider);
+              final todayNotes = mainState.todayNotes;
 
-              // 노트 목록 버튼
-              SizedBox(height: 20.h),
-              Center(
-                child: GestureDetector(
-                  onTap: () {
-                    context.push('/note-list');
-                  },
-                  child: Container(
-                    width: 120.w,
-                    height: 33.h,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color(0xFF323232).withValues(alpha: 0.4),
-                        width: 1,
+              return ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  // 실제 오늘 선택된 노트 표시
+                  if (todayNotes.isEmpty)
+                    Padding(
+                      padding: EdgeInsets.all(20.h),
+                      child: Center(
+                        child: Text(
+                          '오늘 선택된 노트가 없습니다.\n노트 목록에서 노트를 선택하세요.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: const Color(0xFF323232).withValues(alpha: 0.6),
+                          ),
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(11.r),
-                    ),
-                    child: Center(
-                      child: Text(
-                        '노트 목록',
-                        style: TextStyle(
-                          fontSize: 11.sp,
-                          color: const Color(0xFF323232).withValues(alpha: 0.8),
+                    )
+                  else
+                    ...todayNotes.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final note = entry.value;
+                      final todos = mainState.todosByNote[note.id] ?? [];
+                      return _buildNoteCard(
+                        note.title,
+                        Color(note.colorValue),
+                        Color(note.colorValue),
+                        '00:00:00', // TODO: 실제 집중 시간 표시
+                        isFirst: index == 0,
+                        isLastNote: index == todayNotes.length - 1,
+                        noteId: note.id,
+                        todos: todos,
+                      );
+                    }),
+
+                  // 노트 목록 버튼
+                  SizedBox(height: 20.h),
+                  Center(
+                    child: GestureDetector(
+                      onTap: () async {
+                        await context.push('/note-list');
+                        // 노트 목록에서 돌아왔을 때 데이터 새로고침
+                        if (mounted) {
+                          final state = ref.read(mainStateProvider);
+                          ref.read(loadDataByDateProvider)(state.selectedDate);
+                        }
+                      },
+                      child: Container(
+                        width: 120.w,
+                        height: 33.h,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: const Color(0xFF323232).withValues(alpha: 0.4),
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(11.r),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '노트 목록',
+                            style: TextStyle(
+                              fontSize: 11.sp,
+                              color: const Color(0xFF323232).withValues(alpha: 0.8),
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
-              SizedBox(height: 20.h),
-            ],
+                  SizedBox(height: 20.h),
+                ],
+              );
+            },
           ),
         ),
       ],
@@ -456,84 +500,118 @@ class _MainPageState extends State<MainPage> {
     String time, {
     bool isFirst = false,
     bool isLastNote = false,
+    String? noteId,
+    List<dynamic> todos = const [],
   }) {
     return Column(
       children: [
         // 노트 헤더
-        Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            border: Border(
-              top:
-                  isFirst
-                      ? BorderSide.none
-                      : BorderSide(
-                        color: const Color(0xFF323232).withValues(alpha: 0.4),
-                        width: 0.5,
-                      ),
-              bottom: BorderSide(
-                color: const Color(0xFF323232).withValues(alpha: 0.4),
-                width: 0.5,
+        GestureDetector(
+          onTap: () {
+            if (noteId != null) {
+              context.push('/note-timer/$noteId');
+            }
+          },
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border(
+                top:
+                    isFirst
+                        ? BorderSide.none
+                        : BorderSide(
+                          color: const Color(0xFF323232).withValues(alpha: 0.4),
+                          width: 0.5,
+                        ),
+                bottom: BorderSide(
+                  color: const Color(0xFF323232).withValues(alpha: 0.4),
+                  width: 0.5,
+                ),
               ),
             ),
-          ),
-          padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
-          child: Row(
-            children: [
-              // 색상 박스
-              Container(
-                width: 23.w,
-                height: 23.h,
-                decoration: BoxDecoration(
-                  color: mainColor,
-                  borderRadius: BorderRadius.circular(2.r),
-                ),
-              ),
-              SizedBox(width: 8.w),
-              // 노트 제목
-              Expanded(
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.bold,
+            padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
+            child: Row(
+              children: [
+                // 색상 박스
+                Container(
+                  width: 23.w,
+                  height: 23.h,
+                  decoration: BoxDecoration(
+                    color: mainColor,
+                    borderRadius: BorderRadius.circular(2.r),
                   ),
                 ),
-              ),
-              // 집중시간 표시
-              Container(
-                width: 63.w,
-                height: 20.h,
-                decoration: BoxDecoration(
-                  color: mainColor,
-                  borderRadius: BorderRadius.circular(7.r),
-                ),
-                child: Center(
+                SizedBox(width: 8.w),
+                // 노트 제목
+                Expanded(
                   child: Text(
-                    time,
-                    style: TextStyle(fontSize: 11.sp, color: textColor),
+                    title,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-            ],
+                // 집중시간 표시
+                Container(
+                  width: 63.w,
+                  height: 20.h,
+                  decoration: BoxDecoration(
+                    color: mainColor,
+                    borderRadius: BorderRadius.circular(7.r),
+                  ),
+                  child: Center(
+                    child: Text(
+                      time,
+                      style: TextStyle(fontSize: 11.sp, color: textColor),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-        // 할일 목록
-        _buildTodoItem('문제집 35p 까지 풀기', false, isLast: false),
-        _buildTodoItem('9월 모의고사 오답노트 작성', false, isLast: !isLastNote),
+        // 할일 목록 (실제 데이터)
+        if (todos.isNotEmpty)
+          ...todos.asMap().entries.map((entry) {
+            final index = entry.key;
+            final todo = entry.value;
+            return _buildTodoItem(
+              todo.title,
+              todo.isCompleted,
+              todoId: todo.id,
+              isLast: index == todos.length - 1 && isLastNote,
+            );
+          })
+        else
+          // 할일이 없을 때
+          _buildTodoItem(
+            '할일이 없습니다',
+            false,
+            isLast: isLastNote,
+            isEmpty: true,
+          ),
       ],
     );
   }
 
-  Widget _buildTodoItem(String title, bool isChecked, {bool isLast = false}) {
+  Widget _buildTodoItem(
+    String title,
+    bool isChecked, {
+    bool isLast = false,
+    String? todoId,
+    bool isEmpty = false,
+  }) {
     return Container(
       height: 40.h,
       decoration: BoxDecoration(
         border: Border(
-          bottom: isLast ? BorderSide.none : BorderSide(
-            color: const Color(0xFF323232).withValues(alpha: 0.4),
-            width: 0.5,
-          ),
+          bottom: isLast
+              ? BorderSide.none
+              : BorderSide(
+                  color: const Color(0xFF323232).withValues(alpha: 0.4),
+                  width: 0.5,
+                ),
         ),
       ),
       child: Row(
@@ -550,18 +628,22 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
             child: Center(
-              child: GestureDetector(
-                onTap: () {
-                  // TODO: 체크 상태 토글
-                },
-                child: isChecked
-                    ? SvgPicture.asset(
-                        'assets/icons/check.svg',
-                        width: 14.w,
-                        height: 10.h,
-                      )
-                    : SizedBox(width: 14.w, height: 10.h),
-              ),
+              child: isEmpty
+                  ? SizedBox(width: 14.w, height: 10.h)
+                  : GestureDetector(
+                      onTap: () {
+                        if (todoId != null) {
+                          ref.read(toggleTodoCompleteProvider)(todoId);
+                        }
+                      },
+                      child: isChecked
+                          ? SvgPicture.asset(
+                              'assets/icons/check.svg',
+                              width: 14.w,
+                              height: 10.h,
+                            )
+                          : SizedBox(width: 14.w, height: 10.h),
+                    ),
             ),
           ),
           // 할일 텍스트 (나머지)
@@ -570,7 +652,13 @@ class _MainPageState extends State<MainPage> {
               padding: EdgeInsets.symmetric(horizontal: 12.w),
               child: Text(
                 title,
-                style: TextStyle(fontSize: 12.sp, color: const Color(0xFF323232)),
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: isEmpty
+                      ? const Color(0xFF323232).withValues(alpha: 0.4)
+                      : const Color(0xFF323232),
+                  decoration: isChecked ? TextDecoration.lineThrough : null,
+                ),
               ),
             ),
           ),

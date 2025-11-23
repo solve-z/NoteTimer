@@ -2,37 +2,47 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/di/service_locator.dart';
 import '../../../domain/usecase/note/get_note_by_id_usecase.dart';
 import '../../../domain/usecase/todo/get_todos_by_note_id_usecase.dart';
+import '../../../domain/usecase/todo/create_todo_usecase.dart';
 import '../../../domain/usecase/todo/toggle_todo_complete_usecase.dart';
 import '../../../domain/usecase/todo/move_todo_to_date_usecase.dart';
 import '../../../domain/usecase/todo/delete_todo_usecase.dart';
 import '../../../domain/usecase/todo/update_todo_usecase.dart';
 import '../../../domain/usecase/memo/get_memos_by_note_id_usecase.dart';
+import '../../../domain/usecase/memo/create_memo_usecase.dart';
+import '../../../domain/model/todo_model.dart';
+import '../../../domain/model/memo_model.dart';
 import 'note_detail_state.dart';
 
 class NoteDetailNotifier extends StateNotifier<NoteDetailState> {
   final GetNoteByIdUseCase _getNoteByIdUseCase;
   final GetTodosByNoteIdUseCase _getTodosByNoteIdUseCase;
+  final CreateTodoUseCase _createTodoUseCase;
   final ToggleTodoCompleteUseCase _toggleTodoCompleteUseCase;
   final MoveTodoToDateUseCase _moveTodoToDateUseCase;
   final DeleteTodoUseCase _deleteTodoUseCase;
   final UpdateTodoUseCase _updateTodoUseCase;
   final GetMemosByNoteIdUseCase _getMemosByNoteIdUseCase;
+  final CreateMemoUseCase _createMemoUseCase;
 
   NoteDetailNotifier({
     required GetNoteByIdUseCase getNoteByIdUseCase,
     required GetTodosByNoteIdUseCase getTodosByNoteIdUseCase,
+    required CreateTodoUseCase createTodoUseCase,
     required ToggleTodoCompleteUseCase toggleTodoCompleteUseCase,
     required MoveTodoToDateUseCase moveTodoToDateUseCase,
     required DeleteTodoUseCase deleteTodoUseCase,
     required UpdateTodoUseCase updateTodoUseCase,
     required GetMemosByNoteIdUseCase getMemosByNoteIdUseCase,
+    required CreateMemoUseCase createMemoUseCase,
   })  : _getNoteByIdUseCase = getNoteByIdUseCase,
         _getTodosByNoteIdUseCase = getTodosByNoteIdUseCase,
+        _createTodoUseCase = createTodoUseCase,
         _toggleTodoCompleteUseCase = toggleTodoCompleteUseCase,
         _moveTodoToDateUseCase = moveTodoToDateUseCase,
         _deleteTodoUseCase = deleteTodoUseCase,
         _updateTodoUseCase = updateTodoUseCase,
         _getMemosByNoteIdUseCase = getMemosByNoteIdUseCase,
+        _createMemoUseCase = createMemoUseCase,
         super(NoteDetailState());
 
   /// 노트 상세 정보 및 할일/메모 로드
@@ -132,6 +142,54 @@ class NoteDetailNotifier extends StateNotifier<NoteDetailState> {
     }
   }
 
+  /// 할일 추가
+  Future<void> createTodo(String title) async {
+    try {
+      if (state.note == null) return;
+
+      final newTodo = TodoModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        title: title,
+        assignedDate: DateTime.now(),
+        noteId: state.note!.id,
+        createdAt: DateTime.now(),
+        userId: 'local_user', // TODO: 실제 userId 사용
+      );
+
+      await _createTodoUseCase(newTodo);
+
+      // 현재 노트의 할일 목록 다시 로드
+      final todos = await _getTodosByNoteIdUseCase(state.note!.id);
+      state = state.copyWith(todos: todos);
+    } catch (e) {
+      state = state.copyWith(errorMessage: '할일 추가에 실패했습니다: $e');
+    }
+  }
+
+  /// 메모 추가
+  Future<void> createMemo(String content) async {
+    try {
+      if (state.note == null) return;
+
+      final newMemo = MemoModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        content: content,
+        assignedDate: DateTime.now(),
+        noteId: state.note!.id,
+        createdAt: DateTime.now(),
+        userId: 'local_user', // TODO: 실제 userId 사용
+      );
+
+      await _createMemoUseCase(newMemo);
+
+      // 현재 노트의 메모 목록 다시 로드
+      final memos = await _getMemosByNoteIdUseCase(state.note!.id);
+      state = state.copyWith(memos: memos);
+    } catch (e) {
+      state = state.copyWith(errorMessage: '메모 추가에 실패했습니다: $e');
+    }
+  }
+
   /// 노트 그룹 접기/펼치기
   void toggleNoteExpanded(String noteId) {
     final newExpandedNotes = Set<String>.from(state.expandedNotes);
@@ -172,11 +230,13 @@ final noteDetailProvider = StateNotifierProvider.family<NoteDetailNotifier, Note
   final notifier = NoteDetailNotifier(
     getNoteByIdUseCase: getIt<GetNoteByIdUseCase>(),
     getTodosByNoteIdUseCase: getIt<GetTodosByNoteIdUseCase>(),
+    createTodoUseCase: getIt<CreateTodoUseCase>(),
     toggleTodoCompleteUseCase: getIt<ToggleTodoCompleteUseCase>(),
     moveTodoToDateUseCase: getIt<MoveTodoToDateUseCase>(),
     deleteTodoUseCase: getIt<DeleteTodoUseCase>(),
     updateTodoUseCase: getIt<UpdateTodoUseCase>(),
     getMemosByNoteIdUseCase: getIt<GetMemosByNoteIdUseCase>(),
+    createMemoUseCase: getIt<CreateMemoUseCase>(),
   );
 
   // 초기 로드

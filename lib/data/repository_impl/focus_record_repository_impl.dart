@@ -16,4 +16,24 @@ class FocusRecordRepositoryImpl implements FocusRecordRepository {
   Future<int> getTotalFocusTimeByDate(DateTime date) async {
     return await _localDataSource.getTotalFocusTimeByDate(date);
   }
+
+  @override
+  Future<FocusRecordModel?> getOngoingFocusRecord(String noteId) async {
+    return await _localDataSource.getOngoingFocusRecord(noteId);
+  }
+
+  @override
+  Future<void> createFocusRecord(FocusRecordModel record) async {
+    return await _localDataSource.addRecord(record);
+  }
+
+  @override
+  Future<void> updateFocusRecord(FocusRecordModel record) async {
+    return await _localDataSource.updateRecord(record);
+  }
+
+  @override
+  Future<int> getTodayTotalFocusTimeByNote(String noteId, DateTime date) async {
+    return await _localDataSource.getTodayTotalFocusTimeByNote(noteId, date);
+  }
 }

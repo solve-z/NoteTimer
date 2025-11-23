@@ -254,26 +254,26 @@
 
 ---
 
-## 8. Clean Architecture 준수 확인
+## 9. Clean Architecture 준수 확인
 
 ### 검증 체크리스트
 
-- [ ] ✅ Presentation에서 Data Layer (Repository 구현체, DataSource, DTO) 직접 참조 없음
-- [ ] ✅ Presentation에서 Supabase, Hive 등 외부 라이브러리 직접 사용 없음
-- [ ] ✅ Presentation은 UseCase만 호출 (note_detail_provider.dart 확인)
-- [ ] ✅ Data Layer에서 Presentation 참조 없음
-- [ ] ✅ 모든 의존성은 get_it으로 주입
+- [x] ✅ Presentation에서 Data Layer (Repository 구현체, DataSource, DTO) 직접 참조 없음
+- [x] ✅ Presentation에서 Supabase, Hive 등 외부 라이브러리 직접 사용 없음
+- [x] ✅ Presentation은 UseCase만 호출 (note_detail_provider.dart 확인)
+- [x] ✅ Data Layer에서 Presentation 참조 없음
+- [x] ✅ Domain Layer는 순수 Dart만 사용 (외부 패키지 없음)
+- [x] ✅ 모든 의존성은 get_it으로 주입
 
 ---
 
-## 9. 스타일 가이드 준수
+## 10. 스타일 가이드 준수
 
-- [ ] Color opacity는 `withValues(alpha:)` 사용 (❌ `withOpacity()` 금지)
-- [ ] 모든 크기는 flutter_screenutil 확장 사용 (`.w`, `.h`, `.sp`, `.r`)
-- [ ] 피그마 디자인 값(360x800 기준) 그대로 사용
-- [ ] 보관중 배지 스타일링 일관성
-- [ ] 비활성화 상태 회색 처리
-- [ ] 메모 배경색은 노트 색상과 동일
+- [x] Color opacity는 `withValues(alpha:)` 사용 (❌ `withOpacity()` 금지)
+- [x] 모든 크기는 flutter_screenutil 확장 사용 (`.w`, `.h`, `.sp`, `.r`)
+- [x] 피그마 디자인 값(360x800 기준) 그대로 사용
+- [x] 비활성화 상태 회색 처리 (보관된 노트의 할일)
+- [x] 메모 배경색은 노트 색상과 동일
 
 ---
 

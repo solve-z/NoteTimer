@@ -42,4 +42,27 @@ class FocusRecordLocalDataSource {
   Future<List<FocusRecordModel>> getAllRecords() async {
     return _focusRecordBox.values.toList();
   }
+
+  /// 특정 노트의 진행 중인 집중 기록 조회 (endTime이 null인 것)
+  Future<FocusRecordModel?> getOngoingFocusRecord(String noteId) async {
+    final records = _focusRecordBox.values.where((record) {
+      return record.noteId == noteId && record.endTime == null;
+    }).toList();
+
+    return records.isEmpty ? null : records.first;
+  }
+
+  /// 특정 노트의 오늘 총 집중 시간 조회 (초 단위)
+  Future<int> getTodayTotalFocusTimeByNote(String noteId, DateTime date) async {
+    final startOfDay = DateTime(date.year, date.month, date.day);
+    final endOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59);
+
+    final records = _focusRecordBox.values.where((record) {
+      return record.noteId == noteId &&
+          record.startTime.isAfter(startOfDay) &&
+          record.startTime.isBefore(endOfDay);
+    }).toList();
+
+    return records.fold<int>(0, (sum, record) => sum + record.duration);
+  }
 }

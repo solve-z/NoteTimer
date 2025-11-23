@@ -39,12 +39,19 @@ import '../../domain/usecase/note/update_note_order_usecase.dart';
 import '../../domain/usecase/note/reset_today_selection_usecase.dart';
 import '../../domain/usecase/focus/get_records_by_date_usecase.dart';
 import '../../domain/usecase/focus/get_total_focus_time_usecase.dart';
+import '../../domain/usecase/focus_record/get_ongoing_focus_record_usecase.dart';
+import '../../domain/usecase/focus_record/create_focus_record_usecase.dart';
+import '../../domain/usecase/focus_record/update_focus_record_usecase.dart';
+import '../../domain/usecase/focus_record/get_today_total_focus_time_by_note_usecase.dart';
 import '../../domain/usecase/todo/get_todos_by_note_id_usecase.dart';
+import '../../domain/usecase/todo/get_todos_by_note_and_date_usecase.dart';
+import '../../domain/usecase/todo/create_todo_usecase.dart';
 import '../../domain/usecase/todo/toggle_todo_complete_usecase.dart';
 import '../../domain/usecase/todo/move_todo_to_date_usecase.dart';
 import '../../domain/usecase/todo/delete_todo_usecase.dart';
 import '../../domain/usecase/todo/update_todo_usecase.dart';
 import '../../domain/usecase/memo/get_memos_by_note_id_usecase.dart';
+import '../../domain/usecase/memo/create_memo_usecase.dart';
 import '../../domain/usecase/note/get_note_by_id_usecase.dart';
 
 final getIt = GetIt.instance;
@@ -112,8 +119,16 @@ Future<void> setupServiceLocator() async {
   getIt.registerFactory(() => GetRecordsByDateUseCase(getIt<FocusRecordRepository>()));
   getIt.registerFactory(() => GetTotalFocusTimeUseCase(getIt<FocusRecordRepository>()));
 
+  // Use Cases - Focus Record (Timer)
+  getIt.registerFactory(() => GetOngoingFocusRecordUseCase(getIt<FocusRecordRepository>()));
+  getIt.registerFactory(() => CreateFocusRecordUseCase(getIt<FocusRecordRepository>()));
+  getIt.registerFactory(() => UpdateFocusRecordUseCase(getIt<FocusRecordRepository>()));
+  getIt.registerFactory(() => GetTodayTotalFocusTimeByNoteUseCase(getIt<FocusRecordRepository>()));
+
   // Use Cases - Todo
   getIt.registerFactory(() => GetTodosByNoteIdUseCase(getIt<TodoRepository>()));
+  getIt.registerFactory(() => GetTodosByNoteAndDateUseCase(getIt<TodoRepository>()));
+  getIt.registerFactory(() => CreateTodoUseCase(getIt<TodoRepository>()));
   getIt.registerFactory(() => ToggleTodoCompleteUseCase(getIt<TodoRepository>()));
   getIt.registerFactory(() => MoveTodoToDateUseCase(getIt<TodoRepository>()));
   getIt.registerFactory(() => DeleteTodoUseCase(getIt<TodoRepository>()));
@@ -121,6 +136,7 @@ Future<void> setupServiceLocator() async {
 
   // Use Cases - Memo
   getIt.registerFactory(() => GetMemosByNoteIdUseCase(getIt<MemoRepository>()));
+  getIt.registerFactory(() => CreateMemoUseCase(getIt<MemoRepository>()));
 
   // Use Cases - Note (추가)
   getIt.registerFactory(() => GetNoteByIdUseCase(getIt<NoteRepository>()));

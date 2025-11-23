@@ -11,11 +11,18 @@ class NoteLocalDataSource {
     return _noteBox.values.where((note) => note.isPinned).toList();
   }
 
-  /// 특정 날짜에 사용된 노트 목록 조회
-  /// (추후 FocusRecord와 연동하여 해당 날짜에 기록이 있는 노트만 필터링)
+  /// 특정 날짜에 사용된 노트 목록 조회 (고정된 노트 + 오늘 선택된 노트)
   Future<List<NoteModel>> getNotesByDate(DateTime date) async {
-    // TODO: FocusRecord 연동하여 실제 날짜별 필터링 구현
-    return _noteBox.values.toList();
+    return _noteBox.values
+        .where((note) => (note.isPinned || note.isSelectedForToday) && !note.isArchived)
+        .toList()
+      ..sort((a, b) {
+        // 고정된 노트가 먼저 오도록
+        if (a.isPinned && !b.isPinned) return -1;
+        if (!a.isPinned && b.isPinned) return 1;
+        // 같은 고정 상태면 sortOrder로 정렬
+        return a.sortOrder.compareTo(b.sortOrder);
+      });
   }
 
   /// 노트 추가
