@@ -5,6 +5,7 @@ import 'package:note_timer/presentation/pages/onboarding/onboarding_page.dart';
 import 'package:note_timer/presentation/pages/nickname/nickname_page.dart';
 import 'package:note_timer/presentation/pages/note_list/note_list_page.dart';
 import 'package:note_timer/presentation/pages/note_add_update/note_add_update_page.dart';
+import 'package:note_timer/presentation/pages/note_detail/note_detail_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/di/service_locator.dart';
 import '../../domain/model/note_model.dart';
@@ -90,6 +91,17 @@ GoRouter createRouter(bool isLoggedIn) {
           return MaterialPage(
             key: state.pageKey,
             child: NoteAddUpdatePage(note: note),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/note-detail/:noteId',
+        name: 'note-detail',
+        pageBuilder: (context, state) {
+          final noteId = state.pathParameters['noteId']!;
+          return MaterialPage(
+            key: state.pageKey,
+            child: NoteDetailPage(noteId: noteId),
           );
         },
       ),

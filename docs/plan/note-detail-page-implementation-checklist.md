@@ -139,22 +139,24 @@
 
 ### 5-1. 노트 상세 페이지 구조
 
-- [ ] `lib/presentation/pages/note_detail/note_detail_page.dart` 생성
+- [x] `lib/presentation/pages/note_detail/note_detail_page.dart` 생성
   - Scaffold + AppBar + TabBar
   - 2개 탭: 할일, 메모
+  - StateNotifierProvider.family 사용하여 noteId로 초기화
+  - 로딩 상태 및 에러 처리
 
 ### 5-2. AppBar 위젯
 
-- [ ] AppBar 구현
+- [x] AppBar 구현
   - 뒤로가기 버튼 (좌측)
   - 노트 이름 타이틀 (중앙)
-  - (옵션) 노트 메뉴 버튼 (우측)
 
 ### 5-3. TabBar 위젯
 
-- [ ] TabBar 구현
+- [x] TabBar 구현
   - 2개 탭: "할일", "메모"
   - 탭 인디케이터 스타일링
+  - TabController 연동
 
 ### 5-4. 노트 그룹 헤더 위젯
 
@@ -176,15 +178,15 @@
 
 ### 5-6. 할일 아이템 위젯
 
-- [ ] `lib/presentation/pages/note_detail/widgets/todo_item.dart` 생성
+- [ ] `lib/presentation/note_detail/widgets/todo_item.dart` 생성
   - 체크박스 (완료/미완료)
   - 할일 제목
-  - 더보기 메뉴 (⋮): 수정/삭제/이동
+  - 더보기 메뉴 (⋮): 수정/삭제/이동 (다른 날짜로 이동)
   - 보관중 노트: 전체 비활성화, 회색 배경
 
 ### 5-7. 메모 아이템 위젯
 
-- [ ] `lib/presentation/pages/note_detail/widgets/memo_item.dart` 생성
+- [ ] `lib/presentation/note_detail/widgets/memo_item.dart` 생성
   - 메모 내용 표시 (3줄 정도 미리보기)
   - 메모 배경색 (노트 색상)
   - 클릭 시 메모 상세 페이지로 이동
@@ -192,7 +194,7 @@
 
 ### 5-8. 날짜 이동 다이얼로그
 
-- [ ] `lib/presentation/pages/note_detail/widgets/move_todo_dialog.dart` 생성
+- [ ] `lib/presentation/note_detail/widgets/move_date_dialog.dart` 생성
   - 캘린더 위젯 (기본값: 오늘)
   - 날짜 선택
   - 확인/취소 버튼
@@ -213,7 +215,7 @@
 
 ## 6. 라우팅 설정
 
-- [ ] `lib/presentation/router/router.dart`에 라우트 추가
+- [x] `lib/presentation/router/router.dart`에 라우트 추가
   - `/note-detail/:noteId` 경로 추가 (noteId 파라미터)
   - NoteDetailPage로 연결
 
