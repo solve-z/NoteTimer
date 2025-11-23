@@ -95,7 +95,7 @@
 
 ### 4-1. State 클래스 정의
 
-- [ ] `lib/presentation/note_list/provider/note_list_state.dart` 생성
+- [x] `lib/presentation/note_list/provider/note_list_state.dart` 생성
   - `activeNotes` (List<NoteModel>) - 사용중 노트 목록
   - `archivedNotes` (List<NoteModel>) - 보관함 노트 목록
   - `selectedTab` (int, 0: 사용중, 1: 보관함)
@@ -105,7 +105,7 @@
 
 ### 4-2. Provider 작성
 
-- [ ] `lib/presentation/note_list/provider/note_list_provider.dart` 생성
+- [x] `lib/presentation/note_list/provider/note_list_provider.dart` 생성
   - Riverpod `StateNotifierProvider` 사용
   - UseCase들만 의존성 주입 (❌ Repository/DataSource 직접 참조 금지)
   - 메서드:
@@ -127,26 +127,26 @@
 
 ### 5-1. 노트 목록 페이지 구조
 
-- [ ] `lib/presentation/pages/note_list/note_list_page.dart` 생성
+- [x] `lib/presentation/pages/note_list/note_list_page.dart` 생성
   - Scaffold + AppBar + TabBar
   - 2개 탭: 사용중, 보관함
 
 ### 5-2. AppBar 위젯
 
-- [ ] AppBar 구현
+- [x] AppBar 구현
   - 뒤로가기 버튼 (좌측)
   - "노트 목록" 타이틀 (중앙)
   - 검색 버튼 (우측, 핑크색 배경, 전체 너비)
 
 ### 5-3. TabBar 위젯
 
-- [ ] TabBar 구현
+- [x] TabBar 구현
   - 2개 탭: "사용중", "보관함"
   - 탭 인디케이터 스타일링
 
 ### 5-4. 노트 카드 위젯
 
-- [ ] `lib/presentation/pages/note_list/widgets/note_card.dart` 생성
+- [x] `lib/presentation/pages/note_list/widgets/note_card.dart` 생성
   - 노트 제목 표시
   - 노트 색상 적용
   - 고정 아이콘 (isPinned = true일 때, 좌측 상단 빨간 핀)
@@ -157,7 +157,7 @@
 
 ### 5-5. 더보기 메뉴 (PopupMenuButton)
 
-- [ ] 더보기 메뉴 구현
+- [x] 더보기 메뉴 구현
   - 고정/고정 해제 (isPinned 토글)
   - 수정 (노트 추가 페이지와 동일, 타이틀만 "노트 수정")
   - 보관/보관 해제 (탭에 따라 다름)
@@ -165,21 +165,21 @@
 
 ### 5-6. 노트 리스트 (ReorderableListView)
 
-- [ ] `lib/presentation/pages/note_list/widgets/note_list_view.dart` 생성
+- [x] `lib/presentation/pages/note_list/widgets/note_list_view.dart` 생성
   - `ReorderableListView.builder` 사용
   - 고정된 노트는 상단에 고정 (고정되지 않은 노트는 고정 노트보다 위로 올릴 수 없음)
   - 빈 목록일 때 안내 메시지
 
 ### 5-7. FAB (Floating Action Button)
 
-- [ ] FAB 구현
+- [x] FAB 구현
   - 우측 하단 고정
   - "+" 아이콘
   - 클릭 시 노트 추가 페이지로 이동 (추후 구현)
 
 ### 5-8. 광고 배너
 
-- [ ] 하단 광고 배너 플레이스홀더
+- [x] 하단 광고 배너 플레이스홀더
   - 빨간색 배경 + "광고배너" 텍스트
   - (추후 실제 광고 SDK 연동)
 
