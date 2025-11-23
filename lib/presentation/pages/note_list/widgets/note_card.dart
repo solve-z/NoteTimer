@@ -22,7 +22,7 @@ class NoteCard extends ConsumerWidget {
         // 메인 카드
         GestureDetector(
           onTap: () {
-            // TODO: 노트 상세 페이지로 이동
+            context.push('/note-detail/${note.id}');
           },
           child: Container(
             width: double.infinity,

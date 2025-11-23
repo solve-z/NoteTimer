@@ -178,38 +178,43 @@
 
 ### 5-6. 할일 아이템 위젯
 
-- [ ] `lib/presentation/note_detail/widgets/todo_item.dart` 생성
+- [x] `lib/presentation/note_detail/widgets/todo_item.dart` 생성
   - 체크박스 (완료/미완료)
   - 할일 제목
   - 더보기 메뉴 (⋮): 수정/삭제/이동 (다른 날짜로 이동)
   - 보관중 노트: 전체 비활성화, 회색 배경
+  - DatePicker를 통한 날짜 이동
 
 ### 5-7. 메모 아이템 위젯
 
-- [ ] `lib/presentation/note_detail/widgets/memo_item.dart` 생성
+- [x] `lib/presentation/note_detail/widgets/memo_item.dart` 생성
   - 메모 내용 표시 (3줄 정도 미리보기)
   - 메모 배경색 (노트 색상)
-  - 클릭 시 메모 상세 페이지로 이동
-  - 보관중 노트도 클릭 가능 (메모는 수정 가능)
+  - 클릭 시 메모 상세 페이지로 이동 (TODO)
 
-### 5-8. 날짜 이동 다이얼로그
+### 5-8. 날짜 이동 기능
 
-- [ ] `lib/presentation/note_detail/widgets/move_date_dialog.dart` 생성
-  - 캘린더 위젯 (기본값: 오늘)
-  - 날짜 선택
-  - 확인/취소 버튼
+- [x] TodoItem 내 DatePicker 통합 구현
+  - 더보기 메뉴에서 "이동" 선택 시 DatePicker 표시
+  - 날짜 선택 후 onMove 콜백 호출
 
 ### 5-9. 할일/메모 리스트 뷰
 
-- [ ] `lib/presentation/pages/note_detail/widgets/todo_list_view.dart` 생성
-  - 노트별 그룹화 → 날짜별 그룹화 (2단계)
-  - 접기/펼치기 상태 관리
+- [x] `lib/presentation/pages/note_detail/widgets/todo_list_view.dart` 생성
+  - 날짜별 그룹화 (최신순 정렬)
+  - 지난 날짜 미완료 할일 빨간색 표시
   - 빈 목록 안내 메시지
+  - Provider 메서드 연동 (toggle, delete, move)
 
-- [ ] `lib/presentation/pages/note_detail/widgets/memo_list_view.dart` 생성
-  - 노트별 그룹화 → 날짜별 그룹화 (2단계)
-  - 접기/펼치기 상태 관리
+- [x] `lib/presentation/pages/note_detail/widgets/memo_list_view.dart` 생성
+  - 날짜별 그룹화 (최신순 정렬)
+  - 노트 색상 적용
   - 빈 목록 안내 메시지
+  - onTap 콜백 연동
+
+- [x] NoteDetailPage에 ListView 연결
+  - TodoListView와 MemoListView를 TabBarView에 통합
+  - Provider 메서드와 연결
 
 ---
 
@@ -219,13 +224,23 @@
   - `/note-detail/:noteId` 경로 추가 (noteId 파라미터)
   - NoteDetailPage로 연결
 
-- [ ] 기존 페이지에서 연결
+- [x] 기존 페이지에서 연결
   - NoteCard 클릭 시 `/note-detail/:noteId`로 이동
   - (추후) MainPage의 "오늘 사용" 노트 클릭 시 이동
 
 ---
 
-## 7. 코드 생성 및 빌드
+## 7. 추가 기능 구현
+
+- [x] 할일 수정 기능
+  - TodoEditDialog 다이얼로그 생성
+  - Provider에 updateTodoTitle 메서드 추가
+  - TodoItem, TodoListView, NoteDetailPage 연동
+
+- [x] 할일 삭제 확인 다이얼로그
+  - TodoItem에서 삭제 시 확인 다이얼로그 표시
+
+## 8. 코드 생성 및 빌드
 
 - [ ] `flutter analyze` 실행하여 에러 확인
 - [ ] `flutter run` 실행하여 UI 확인

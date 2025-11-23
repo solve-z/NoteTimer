@@ -108,6 +108,30 @@ class NoteDetailNotifier extends StateNotifier<NoteDetailState> {
     }
   }
 
+  /// 할일 제목 수정
+  Future<void> updateTodoTitle(String todoId, String newTitle) async {
+    try {
+      // 현재 todo 찾기
+      final todo = state.todos.firstWhere((t) => t.id == todoId);
+
+      // 제목만 변경한 새 todo 생성
+      final updatedTodo = todo.copyWith(
+        title: newTitle,
+        updatedAt: DateTime.now(),
+      );
+
+      await _updateTodoUseCase(updatedTodo);
+
+      // 현재 노트의 할일 목록 다시 로드
+      if (state.note != null) {
+        final todos = await _getTodosByNoteIdUseCase(state.note!.id);
+        state = state.copyWith(todos: todos);
+      }
+    } catch (e) {
+      state = state.copyWith(errorMessage: '할일 수정에 실패했습니다: $e');
+    }
+  }
+
   /// 노트 그룹 접기/펼치기
   void toggleNoteExpanded(String noteId) {
     final newExpandedNotes = Set<String>.from(state.expandedNotes);

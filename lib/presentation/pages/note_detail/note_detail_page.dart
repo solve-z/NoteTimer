@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../note_detail/provider/note_detail_provider.dart';
+import 'widgets/todo_list_view.dart';
+import 'widgets/memo_list_view.dart';
 
 class NoteDetailPage extends ConsumerStatefulWidget {
   final String noteId;
@@ -123,18 +125,37 @@ class _NoteDetailPageState extends ConsumerState<NoteDetailPage>
         controller: _tabController,
         children: [
           // 할일 탭
-          Center(
-            child: Text(
-              '할일 목록 (구현 예정)',
-              style: TextStyle(fontSize: 16.sp, color: Colors.grey),
-            ),
+          TodoListView(
+            todos: state.todos,
+            note: state.note,
+            onToggle: (todoId) {
+              ref
+                  .read(noteDetailProvider(widget.noteId).notifier)
+                  .toggleTodoComplete(todoId);
+            },
+            onDelete: (todoId) {
+              ref
+                  .read(noteDetailProvider(widget.noteId).notifier)
+                  .deleteTodo(todoId);
+            },
+            onEdit: (todoId, newTitle) {
+              ref
+                  .read(noteDetailProvider(widget.noteId).notifier)
+                  .updateTodoTitle(todoId, newTitle);
+            },
+            onMove: (todoId, newDate) {
+              ref
+                  .read(noteDetailProvider(widget.noteId).notifier)
+                  .moveTodoToDate(todoId, newDate);
+            },
           ),
           // 메모 탭
-          Center(
-            child: Text(
-              '메모 목록 (구현 예정)',
-              style: TextStyle(fontSize: 16.sp, color: Colors.grey),
-            ),
+          MemoListView(
+            memos: state.memos,
+            note: state.note,
+            onTap: (memoId) {
+              // TODO: 메모 상세 페이지로 이동
+            },
           ),
         ],
       ),
