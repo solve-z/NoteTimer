@@ -25,6 +25,15 @@ class NoteModel extends HiveObject {
   @HiveField(6)
   final String userId;
 
+  @HiveField(7)
+  final bool isArchived;
+
+  @HiveField(8)
+  final bool isSelectedForToday;
+
+  @HiveField(9)
+  final int sortOrder;
+
   NoteModel({
     required this.id,
     required this.title,
@@ -33,6 +42,9 @@ class NoteModel extends HiveObject {
     required this.createdAt,
     this.updatedAt,
     required this.userId,
+    this.isArchived = false,
+    this.isSelectedForToday = false,
+    this.sortOrder = 0,
   });
 
   NoteModel copyWith({
@@ -43,6 +55,9 @@ class NoteModel extends HiveObject {
     DateTime? createdAt,
     DateTime? updatedAt,
     String? userId,
+    bool? isArchived,
+    bool? isSelectedForToday,
+    int? sortOrder,
   }) {
     return NoteModel(
       id: id ?? this.id,
@@ -52,6 +67,9 @@ class NoteModel extends HiveObject {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       userId: userId ?? this.userId,
+      isArchived: isArchived ?? this.isArchived,
+      isSelectedForToday: isSelectedForToday ?? this.isSelectedForToday,
+      sortOrder: sortOrder ?? this.sortOrder,
     );
   }
 }

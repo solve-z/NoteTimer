@@ -24,13 +24,16 @@ class NoteModelAdapter extends TypeAdapter<NoteModel> {
       createdAt: fields[4] as DateTime,
       updatedAt: fields[5] as DateTime?,
       userId: fields[6] as String,
+      isArchived: fields[7] as bool,
+      isSelectedForToday: fields[8] as bool,
+      sortOrder: fields[9] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, NoteModel obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,7 +47,13 @@ class NoteModelAdapter extends TypeAdapter<NoteModel> {
       ..writeByte(5)
       ..write(obj.updatedAt)
       ..writeByte(6)
-      ..write(obj.userId);
+      ..write(obj.userId)
+      ..writeByte(7)
+      ..write(obj.isArchived)
+      ..writeByte(8)
+      ..write(obj.isSelectedForToday)
+      ..writeByte(9)
+      ..write(obj.sortOrder);
   }
 
   @override
