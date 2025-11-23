@@ -16,4 +16,59 @@ class NoteRepositoryImpl implements NoteRepository {
   Future<List<NoteModel>> getNotesByDate(DateTime date) async {
     return await _localDataSource.getNotesByDate(date);
   }
+
+  @override
+  Future<List<NoteModel>> getAllActiveNotes() async {
+    return await _localDataSource.getAllActiveNotes();
+  }
+
+  @override
+  Future<List<NoteModel>> getAllArchivedNotes() async {
+    return await _localDataSource.getAllArchivedNotes();
+  }
+
+  @override
+  Future<void> createNote(NoteModel note) async {
+    return await _localDataSource.addNote(note);
+  }
+
+  @override
+  Future<void> updateNote(NoteModel note) async {
+    return await _localDataSource.updateNote(note);
+  }
+
+  @override
+  Future<void> deleteNote(String noteId) async {
+    return await _localDataSource.deleteNote(noteId);
+  }
+
+  @override
+  Future<void> archiveNote(String noteId) async {
+    return await _localDataSource.archiveNote(noteId);
+  }
+
+  @override
+  Future<void> unarchiveNote(String noteId) async {
+    return await _localDataSource.unarchiveNote(noteId);
+  }
+
+  @override
+  Future<void> togglePinNote(String noteId) async {
+    return await _localDataSource.togglePinNote(noteId);
+  }
+
+  @override
+  Future<void> toggleSelectForToday(String noteId) async {
+    return await _localDataSource.toggleSelectForToday(noteId);
+  }
+
+  @override
+  Future<void> updateNoteOrder(List<String> noteIds) async {
+    return await _localDataSource.updateNoteOrder(noteIds);
+  }
+
+  @override
+  Future<void> resetTodaySelection() async {
+    return await _localDataSource.resetTodaySelection();
+  }
 }
